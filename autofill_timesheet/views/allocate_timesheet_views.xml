@@ -1,0 +1,152 @@
+<odoo>
+    <record id="view_allocate_timesheet_line_form" model="ir.ui.view">
+        <field name="name">view.allocate.timesheet.line.form</field>
+        <field name="model">allocate.timesheet.line</field>
+        <field name="arch" type="xml">
+            <form string="Allocate Timesheet Lines">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="employee_id"/>
+                            <field name="total_actual_working_hours" string="Total Work Entries"
+                                   widget="timesheet_uom"/>
+                            <field name="total_working_hours" string="Total Timesheets" widget="timesheet_uom"/>
+                            <field name="total_time_off_hours" string="Total Time Offs" widget="timesheet_uom"/>
+                        </group>
+                        <group>
+                            <field name="net_working_hours" widget="timesheet_uom"/>
+                            <field name="net_working_hours_percentage"/>
+                            <field name="analytic_distribution" widget="analytic_distribution"
+                                   groups="analytic.group_analytic_accounting"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_allocate_timesheet_filter" model="ir.ui.view">
+        <field name="name">view.allocate.timesheet.filter</field>
+        <field name="model">allocate.timesheet</field>
+        <field name="arch" type="xml">
+            <search string="Allocate Timesheets">
+                <field name="name"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_allocate_timesheets_list" model="ir.ui.view">
+        <field name="name">view.allocate.timesheet.list</field>
+        <field name="model">allocate.timesheet</field>
+        <field name="arch" type="xml">
+            <list string="Allocate Timesheets">
+                <field name="name"/>
+                <field name="allocate_month"/>
+                <field name="employee_ids" widget="many2many_tags" optional="hide"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_allocate_timesheets_form" model="ir.ui.view">
+        <field name="name">view.allocate.timesheet.form</field>
+        <field name="model">allocate.timesheet</field>
+        <field name="arch" type="xml">
+            <form string="Allocate Timesheets">
+                <header>
+                    <button name="action_generate_allocation" type="object" string="Generate Allocation"
+                            invisible="state != 'not_allocated'"/>
+                    <button name="action_distribute" type="object" string="Distribute"
+                            invisible="state != 'not_allocated'" class="oe_highlight"/>
+                    <button name="action_reset_allocation" type="object" string="Undo Allocation"
+                            invisible="state != 'allocated'" class="oe_highlight"
+                            groups="autofill_timesheet.group_allow_reset_allocation_timesheets"/>
+
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="not_allocated,allocated,partial_payroll,in_payroll"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" type="object" name="action_get_timesheets" string="Timesheets"
+                                icon="fa-list" invisible="state == 'not_allocated'"/>
+                    </div>
+
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group>
+                            <field name="date" readonly="state != 'not_allocated'"/>
+                            <field name="company_id" groups="base.group_multi_company"
+                                   options="{'no_create': True, 'no_open': True}"/>
+                            <field name="allocate_month"/>
+                            <field name="available_employee_ids" invisible="1"/>
+                            <field name="start_date_month" invisible="1"/>
+                            <field name="company_id" invisible="1"/>
+                        </group>
+                        <group>
+                            <label for="copy_allocate_timesheet_id" string="Copy Previous Allocations"/>
+                            <div class="o_row">
+                                <field name="copy_allocate_timesheet_id" options="{'no_open':True,'no_create':True}"
+                                       readonly="state != 'not_allocated'"/>
+                                <button name="action_update_allocate" type="object" string="Update Allocated"
+                                        class="btn-link mb-1 px-0" icon="fa-refresh"
+                                        confirm="This will update distribution of all employees based on copy allocate timesheet."
+                                        invisible=" state != 'not_allocated'"/>
+                            </div>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page name="allocated" string="Allocated">
+                            <field name="line_ids">
+                                <list name="line_ids" string="Lines" create="0" delete="0" editable="bottom"
+                                      decoration-danger="net_working_hours_percentage != 100">
+                                    <field name="employee_id"/>
+                                    <field name="total_actual_working_hours" string="Total Work Entries"
+                                           sum="total Work Entries"
+                                           widget="timesheet_uom" optional="show"/>
+                                    <field name="total_working_hours" string="Total Timesheets" sum="Total Timesheets"
+                                           widget="timesheet_uom"
+                                           optional="show"/>
+                                    <field name="total_time_off_hours" string="Total Time Offs"
+                                           sum="Total Time Offs"
+                                           widget="timesheet_uom" optional="show"/>
+                                    <field name="net_working_hours" sum="total Net Working Hours"
+                                           widget="timesheet_uom" optional="show"/>
+                                    <field name="net_working_hours_percentage" optional="show"/>
+                                    <field name="unlock" column_invisible="parent.state != 'allocated'"
+                                           optional="show"/>
+                                    <field name="analytic_distribution" widget="analytic_distribution"
+                                           groups="analytic.group_analytic_accounting"
+                                           readonly="(has_payslip or not unlock) and parent.state != 'not_allocated'"
+                                           optional="show"/>
+                                    <field name="has_payslip" column_invisible="parent.state != 'partial_payroll'"
+                                           optional="hide"/>
+                                    <button name="action_distribute" type="object" string="Redistribute"
+                                            invisible="parent.state != 'allocated' or has_payslip or not unlock"
+                                            icon="fa-exchange"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page name="employees" string="Employees">
+                            <field name="employee_ids" options="{'no_open':True,'no_create':True}"
+                                   readonly="state != 'not_allocated'"/>
+                        </page>
+                    </notebook>
+                </sheet>
+
+                <chatter reload_on_follower="True"/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_allocate_timesheets" model="ir.actions.act_window">
+        <field name="name">Allocate Timesheets</field>
+        <field name="res_model">allocate.timesheet</field>
+        <field name="path">allocate-timesheet</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

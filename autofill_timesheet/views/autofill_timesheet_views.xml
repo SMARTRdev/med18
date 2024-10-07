@@ -1,0 +1,120 @@
+<odoo>
+    <record id="view_autofill_timesheet_line_form" model="ir.ui.view">
+        <field name="name">view.autofill.timesheet.line.form</field>
+        <field name="model">autofill.timesheet.line</field>
+        <field name="arch" type="xml">
+            <form string="Autofill Timesheet Lines">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="employee_id"/>
+                            <field name="actual_working_hours" widget="timesheet_uom"/>
+                            <field name="working_hours_percentage"/>
+                            <field name="working_hours" widget="timesheet_uom"/>
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_autofill_timesheet_filter" model="ir.ui.view">
+        <field name="name">view.autofill.timesheet.filter</field>
+        <field name="model">autofill.timesheet</field>
+        <field name="arch" type="xml">
+            <search string="Autofill Timesheets">
+                <field name="name"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_autofill_timesheets_list" model="ir.ui.view">
+        <field name="name">view.autofill.timesheet.list</field>
+        <field name="model">autofill.timesheet</field>
+        <field name="arch" type="xml">
+            <list string="Autofill Timesheets">
+                <field name="name"/>
+                <field name="autofill_month"/>
+                <field name="employee_ids" widget="many2many_tags" optional="hide"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_autofill_timesheets_form" model="ir.ui.view">
+        <field name="name">view.autofill.timesheet.form</field>
+        <field name="model">autofill.timesheet</field>
+        <field name="arch" type="xml">
+            <form string="Autofill Timesheets">
+                <header>
+                    <button name="action_generate_autofill" type="object" string="Generate Autofill"
+                            invisible="state != 'draft'"/>
+                    <button name="action_confirm" type="object" string="Confirm" invisible="state != 'draft'"/>
+                    <button name="action_reset_to_draft" type="object" string="Reset to Draft"
+                            invisible="state != 'confirmed'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirmed"/>
+                </header>
+
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" type="object" name="action_get_timesheets" string="Timesheets"
+                                icon="fa-list" invisible="state == 'draft'"/>
+                    </div>
+
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group>
+                            <field name="date" readonly="state != 'draft'"/>
+                            <field name="autofill_month"/>
+                            <field name="available_employee_ids" invisible="1"/>
+                            <field name="start_date_month" invisible="1"/>
+                            <field name="company_id" invisible="1"/>
+                            <field name="autofill_custom_hours_employees" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="company_id" groups="base.group_multi_company"
+                                   options="{'no_create': True, 'no_open': True}"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page name="autofill" string="Autofill">
+                            <field name="line_ids" readonly="state != 'draft'">
+                                <list name="line_ids" string="Lines" create="0" delete="0" editable="bottom">
+                                    <field name="employee_id"/>
+                                    <field name="actual_working_hours" sum="total Actual Working Hours"
+                                           widget="timesheet_uom" optional="show"/>
+                                    <field name="working_hours_percentage" optional="show"
+                                           column_invisible="not parent.autofill_custom_hours_employees"/>
+                                    <field name="working_hours" sum="total Working Hours" widget="timesheet_uom"
+                                           optional="show"
+                                           column_invisible="not parent.autofill_custom_hours_employees"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page name="employees" string="Employees">
+                            <field name="employee_ids" options="{'no_open':True,'no_create':True}"
+                                   readonly="state != 'draft'"/>
+                        </page>
+                    </notebook>
+                </sheet>
+
+                <chatter reload_on_follower="True"/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_autofill_timesheets" model="ir.actions.act_window">
+        <field name="name">Autofill Timesheets</field>
+        <field name="res_model">autofill.timesheet</field>
+        <field name="path">autofill-timesheet</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

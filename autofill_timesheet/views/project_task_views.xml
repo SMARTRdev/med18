@@ -1,0 +1,12 @@
+<odoo>
+    <record id="view_autofill_timesheet_project_task_form" model="ir.ui.view">
+        <field name="name">view.autofill.timesheet.project.task.form</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_form2"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='date_assign']" position="after">
+                <field name="autofill_timesheet_month"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,8 @@
+<odoo>
+    <menuitem id="menu_autofill_timesheets" name="Autofill Timesheets" parent="hr_timesheet.menu_hr_time_tracking"
+              action="action_autofill_timesheets" groups="autofill_timesheet.group_allow_autofill_timesheets"
+              sequence="20"/>
+    <menuitem id="menu_allocate_timesheets" name="Allocate Timesheets" parent="hr_timesheet.menu_hr_time_tracking"
+              action="action_allocate_timesheets" groups="autofill_timesheet.group_allow_allocate_timesheets"
+              sequence="21"/>
+</odoo>

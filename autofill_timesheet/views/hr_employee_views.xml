@@ -1,0 +1,12 @@
+<odoo>
+    <record id="view_autofill_timesheet_hr_employee_form" model="ir.ui.view">
+        <field name="name">view.autofill.timesheet.hr.employee.form</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='tz']" position="after">
+                <field name="exclude_timesheets_autofill"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

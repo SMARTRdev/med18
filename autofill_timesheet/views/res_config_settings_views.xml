@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_autofill_timesheet_res_config_settings_form" model="ir.ui.view">
+        <field name="name">view.autofill.timesheet.res.config.settings.form</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="hr_timesheet.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//setting[@id='reminder_user_allow']/.." position="after">
+                <block title="Autofill Timesheets" name="autofill_timesheet_setting_container">
+                    <setting id="autofill_timesheet_project_settings">
+                        <field name="autofill_timesheet_project_id" options="{'no_create': True, 'no_open': True}"/>
+                    </setting>
+                    <setting id="autofill_custom_hours_employees" string="Custom Hours for Employees">
+                        <field name="autofill_custom_hours_employees"/>
+                    </setting>
+                    <setting id="hours_only_allocation_settings">
+                        <field name="hours_only_allocation"/>
+                    </setting>
+                </block>
+            </xpath>
+        </field>
+    </record>
+</odoo>
