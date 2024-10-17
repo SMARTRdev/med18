@@ -1,0 +1,13 @@
+<odoo>
+    <record id="view_assign_contract_sign_item_role_tree" model="ir.ui.view">
+        <field name="name">view.assign.contract.sign.item.role.tree</field>
+        <field name="model">sign.item.role</field>
+        <field name="inherit_id" ref="sign.sign_item_role_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="contact_type"/>
+                <field name="assign_contact_id"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
