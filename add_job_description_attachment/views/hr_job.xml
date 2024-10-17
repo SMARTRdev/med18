@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Inherit Form View to Modify it -->
+    <record id="add_job_description_view_hr_job_form" model="ir.ui.view">
+        <field name="name">add.job.description.view.hr.job.form</field>
+        <field name="model">hr.job</field>
+        <field name="inherit_id" ref="hr.view_hr_job_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="before">
+                <header>
+                    <button name="action_upload_job_description_document"
+                            invisible="has_job_description"
+                            string="Upload Job Description" type="object"
+                            class="oe_highlight"/>
+                </header>
+            </xpath>
+
+            <xpath expr="//sheet/div[@name='button_box']" position="after">
+                <widget name="web_ribbon" title="JD Missing"
+                        invisible="has_job_description"
+                        bg_color="text-bg-danger"/>
+            </xpath>
+
+            <xpath expr="//page[@name='recruitment_page']//field[@name='company_id']" position="after">
+                <field name="has_job_description" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
