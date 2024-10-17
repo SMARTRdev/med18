@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="timesheet_select_report">
+        <t t-call="web.html_container">
+            <t t-set="dates" t-value="sorted(list(set([t['date'] for t in timesheets])))"/>
+
+            <t t-foreach="employees" t-as="employee">
+                <t t-call="web.basic_layout">
+                    <div class="page">
+                        <div class="oe_structure"/>
+
+                        <br />
+                        <div>
+                            <div class="float-start col-10" style="border-bottom: solid black 1px;">
+                                <strong>Monthly Staff Timesheet</strong>
+                            </div>
+                            <div class="float-end">
+                                <img t-if="employee.company_id.logo"
+                                     t-att-src="image_data_uri(employee.company_id.logo)"
+                                     alt="Logo"/>
+                            </div>
+                        </div>
+
+                        <br/>
+                        <br/>
+                        <div style="width:100%">
+                            <div style="width:80%">
+                                <table class="table table-bordered" style="border-color: black;">
+                                    <tr>
+                                        <td style="background-color: #c6d9f0;">
+                                            <strong>Staff Name:</strong>
+                                        </td>
+                                        <td>
+                                            <span t-field="employee.name"/>
+                                        </td>
+                                        <td style="background-color: #c6d9f0;">
+                                            <strong>ID:</strong>
+                                        </td>
+                                        <td>
+                                            <span t-field="employee.barcode"/>
+                                        </td>
+                                        <td style="background-color: #c6d9f0;">
+                                            <strong>Country Office:</strong>
+                                        </td>
+                                        <td>
+                                            <span t-field="employee.company_id"/>
+                                        </td>
+                                        <td rowspan="2" class="text-center"
+                                            style="background-color: #c6d9f0;vertical-align: middle;">
+                                            <strong>Month</strong>
+                                        </td>
+                                        <td rowspan="2" class="text-center" style="vertical-align: middle;">
+                                            <span t-esc="docs[0].date.strftime('%b-%d')"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="background-color: #c6d9f0;">
+                                            <strong>Staff Position:</strong>
+                                        </td>
+                                        <td colspan="5">
+                                            <span t-field="employee.job_id"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="background-color: #c6d9f0;">
+                                            <strong>Supervisor Name:</strong>
+                                        </td>
+                                        <td colspan="3">
+                                            <span t-field="employee.parent_id"/>
+                                        </td>
+                                        <td style="background-color: #c6d9f0;">
+                                            <strong>Field Office:</strong>
+                                        </td>
+                                        <td>
+                                            <span t-field="employee.work_location_id"/>
+                                        </td>
+                                        <td style="background-color: #c6d9f0;">
+                                            <strong>Year</strong>
+                                        </td>
+                                        <td>
+                                            <span t-esc="docs[0].date.strftime('%Y')"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div style="width:20%"/>
+                        </div>
+
+                        <table class="table table-bordered" style="border-color: black;margin-top: -17px;">
+                            <tr>
+                                <td rowspan="2" class="text-center" colspan="2" style="vertical-align: middle;">
+                                    <span>Type</span>
+                                </td>
+                                <td t-foreach="dates" t-as="date">
+                                    <span t-esc="date.strftime('%a')"/>
+                                </td>
+                                <td rowspan="2" class="text-center" style="vertical-align: middle;">
+                                    <span># Total Hrs</span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td t-foreach="dates" t-as="date">
+                                    <span t-esc="date.strftime('%d')"/>
+                                </td>
+                            </tr>
+
+                            <t t-set="projects"
+                               t-value="sorted(list(set([t['project'] for t in timesheets if not t['is_leave'] and t['employee'] == employee])))"/>
+                            <t t-foreach="projects" t-as="project">
+                                <tr>
+                                    <td colspan="2">
+                                        <span t-esc="project"/>
+                                    </td>
+                                    <t t-set="total_time" t-value="0"/>
+                                    <t t-foreach="dates" t-as="date">
+                                        <td>
+                                            <t t-set="daily_time" t-value="0"/>
+                                            <t t-foreach="timesheets" t-as="t">
+                                                <t t-if="not t['is_leave'] and t['employee'] == employee and t['date'] == date and t['project'] == project">
+                                                    <t t-set="daily_time" t-value="daily_time + t['duration']"/>
+                                                </t>
+                                            </t>
+                                            <span t-esc="daily_time"/>
+                                            <t t-set="total_time" t-value="total_time + daily_time"/>
+                                        </td>
+                                    </t>
+                                    <td>
+                                        <span t-esc="total_time"/>
+                                    </td>
+                                </tr>
+                            </t>
+
+                            <!-- Total working hours row -->
+                            <tr>
+                                <td colspan="2">
+                                    <strong>Total Working Hours</strong>
+                                </td>
+                                <t t-foreach="dates" t-as="date">
+                                    <td>
+                                        <t t-set="daily_total" t-value="0"/>
+                                        <t t-foreach="timesheets" t-as="t">
+                                            <t t-if="t['employee'] == employee and t['date'] == date and not t['is_leave']">
+                                                <t t-set="daily_total"
+                                                   t-value="daily_total + t['duration']"/>
+                                            </t>
+                                        </t>
+                                        <strong>
+                                            <span t-esc="daily_total"/>
+                                        </strong>
+                                    </td>
+                                </t>
+                                <td>
+                                    <t t-set="grand_total" t-value="0"/>
+                                    <t t-foreach="timesheets" t-as="t">
+                                        <t t-if="not t['is_leave'] and t['employee'] == employee">
+                                            <t t-set="grand_total" t-value="grand_total + t['duration']"/>
+                                        </t>
+                                    </t>
+                                    <strong>
+                                        <span t-esc="grand_total"/>
+                                    </strong>
+                                </td>
+                            </tr>
+
+                            <t t-set="projects"
+                               t-value="sorted(list(set([t['project'] for t in timesheets if t['is_leave'] and t['employee'] == employee])))"/>
+
+                            <t t-foreach="projects" t-as="project">
+                                <tr>
+                                    <td colspan="2">
+                                        <span t-esc="project"/>
+                                    </td>
+                                    <t t-set="total_time" t-value="0"/>
+                                    <t t-foreach="dates" t-as="date">
+                                        <td>
+                                            <t t-set="daily_time" t-value="0"/>
+                                            <t t-foreach="timesheets" t-as="t">
+                                                <t t-if="t['is_leave'] and t['employee'] == employee and t['date'] == date and t['project'] == project">
+                                                    <t t-set="daily_time" t-value="daily_time + t['duration']"/>
+                                                </t>
+                                            </t>
+                                            <span t-esc="daily_time"/>
+                                            <t t-set="total_time" t-value="total_time + daily_time"/>
+                                        </td>
+                                    </t>
+                                    <td>
+                                        <span t-esc="total_time"/>
+                                    </td>
+                                </tr>
+                            </t>
+
+                            <!-- Total timeoff hours row -->
+                            <tr>
+                                <td colspan="2">
+                                    <strong>Total Timeoff Hours</strong>
+                                </td>
+                                <t t-foreach="dates" t-as="date">
+                                    <td>
+                                        <t t-set="daily_total" t-value="0"/>
+                                        <t t-foreach="timesheets" t-as="t">
+                                            <t t-if="t['employee'] == employee and t['date'] == date and t['is_leave']">
+                                                <t t-set="daily_total"
+                                                   t-value="daily_total + t['duration']"/>
+                                            </t>
+                                        </t>
+                                        <strong>
+                                            <span t-esc="daily_total"/>
+                                        </strong>
+                                    </td>
+                                </t>
+                                <td>
+                                    <t t-set="grand_total" t-value="0"/>
+                                    <t t-foreach="timesheets" t-as="t">
+                                        <t t-if="t['is_leave'] and t['employee'] == employee">
+                                            <t t-set="grand_total" t-value="grand_total + t['duration']"/>
+                                        </t>
+                                    </t>
+                                    <strong>
+                                        <span t-esc="grand_total"/>
+                                    </strong>
+                                </td>
+                            </tr>
+
+                            <!-- Total hours row -->
+                            <tr>
+                                <td colspan="2">
+                                    <strong>Total Hours</strong>
+                                </td>
+                                <t t-foreach="dates" t-as="date">
+                                    <td>
+                                        <t t-set="daily_total" t-value="0"/>
+                                        <t t-foreach="timesheets" t-as="t">
+                                            <t t-if="t['employee'] == employee and t['date'] == date">
+                                                <t t-set="daily_total"
+                                                   t-value="daily_total + t['duration']"/>
+                                            </t>
+                                        </t>
+                                        <strong>
+                                            <span t-esc="daily_total"/>
+                                        </strong>
+                                    </td>
+                                </t>
+                                <td>
+                                    <t t-set="grand_total" t-value="0"/>
+                                    <t t-foreach="timesheets" t-as="t">
+                                        <t t-if="t['employee'] == employee">
+                                            <t t-set="grand_total" t-value="grand_total + t['duration']"/>
+                                        </t>
+                                    </t>
+                                    <strong>
+                                        <span t-esc="grand_total"/>
+                                    </strong>
+                                </td>
+                            </tr>
+                        </table>
+
+
+                        <table style="width:100%">
+                            <tr>
+                                <td width="180">
+                                    <strong>Employee's Signature:</strong>
+                                </td>
+                                <td>
+                                    <strong t-field="employee.name"/>
+                                </td>
+                                <td>
+                                    <strong>Date:</strong>
+                                </td>
+                                <td colspan="2"/>
+                                <td width="180">
+                                    <strong>Supervisor's Signature:</strong>
+                                </td>
+                                <td>
+                                    <strong t-field="employee.parent_id"/>
+                                </td>
+                                <td>
+                                    <strong>Date:</strong>
+                                </td>
+                                <td colspan="2"/>
+                            </tr>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

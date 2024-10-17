@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="custom_paperformat_timesheet" model="report.paperformat">
+        <field name="name">timesheet report</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="margin_top">0</field>
+        <field name="margin_bottom">15</field>
+        <field name="margin_left">5</field>
+        <field name="margin_right">5</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">25</field>
+        <field name="dpi">90</field>
+        <field name="orientation">Landscape</field>
+    </record>
+    <record id="timesheet_report_id" model="ir.actions.report">
+        <field name="name">Timesheet Report</field>
+        <field name="model">account.analytic.line</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">smrtr_timesheet_report.timesheet_select_report</field>
+        <field name="report_file">smrtr_timesheet_report.timesheet_select_report</field>
+
+        <field name="print_report_name">"Timesheet Report"</field>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="smrtr_timesheet_report.custom_paperformat_timesheet"/>
+    </record>
+</odoo>
