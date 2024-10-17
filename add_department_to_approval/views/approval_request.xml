@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="add_department_approvals_approval_request_form" model="ir.ui.view">
+        <field name="name">add.department.approvals.approval.request.form</field>
+        <field name="model">approval.request</field>
+        <field name="inherit_id" ref="approvals.approval_request_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='request_owner_id']" position="attributes">
+                <attribute name="readonly">1</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='request_owner_id']" position="after">
+                <field name="available_departments_ids" invisible="1"/>
+                <field name="department_id" domain="[('id', 'in', available_departments_ids or False)]"/>
+            </xpath>
+
+            <xpath expr="//field[@name='approver_ids']/list/field[@name='user_id']" position="after">
+                <field name="department_id" force_save="1"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

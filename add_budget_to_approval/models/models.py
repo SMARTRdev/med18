@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from odoo import models, fields, api, _, Command
+from odoo import models, fields
 from odoo.addons.approvals.models.approval_category import CATEGORY_SELECTION
 
 
@@ -13,21 +13,21 @@ class ApprovalCategory(models.Model):
 class ApprovalCategoryApprover(models.Model):
     _inherit = "approval.category.approver"
 
-    budget_id = fields.Many2one("crossovered.budget", string="Budget")
+    budget_id = fields.Many2one("budget.analytic", string="Budget")
 
 
 class ApprovalApprover(models.Model):
     _inherit = "approval.approver"
 
     approver_action = fields.Char(string="Approver Action")
-    budget_id = fields.Many2one("crossovered.budget", string="Budget", readonly=True)
+    budget_id = fields.Many2one("budget.analytic", string="Budget", readonly=True)
 
 
 class ApprovalRequest(models.Model):
     _inherit = "approval.request"
 
     has_budget = fields.Selection(related="category_id.has_budget")
-    budget_id = fields.Many2one("crossovered.budget", string="Budget", tracking=True)
+    budget_id = fields.Many2one("budget.analytic", string="Budget", tracking=True)
     date = fields.Datetime(default=fields.Datetime.now)
     has_budget_line_no = fields.Selection(related="category_id.has_budget_line_no")
 
@@ -46,8 +46,3 @@ class ApprovalRequest(models.Model):
             approver.budget_id = template.budget_id.id
             if template.budget_id == self.budget_id and self.budget_id:
                 approver.importance_index += 1
-
-    def _compute_is_request_owner(self):
-        current_user = self.env.user
-        for request in self:
-            request.is_request_owner = (current_user == request.request_owner_id)

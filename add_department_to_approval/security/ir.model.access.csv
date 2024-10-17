@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_smartr-addons/add_department_to_approval_smartr-addons/add_department_to_approval,smartr-addons/add_department_to_approval.smartr-addons/add_department_to_approval,model_smartr-addons/add_department_to_approval_smartr-addons/add_department_to_approval,base.group_user,1,1,1,1

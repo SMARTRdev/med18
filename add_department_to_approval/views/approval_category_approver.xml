@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_department_approvals_approval_category_approver_tree" model="ir.ui.view">
+        <field name="name">view.department.approvals.approval.category.approver.tree</field>
+        <field name="model">approval.category.approver</field>
+        <field name="inherit_id" ref="approvals.approval_category_approver_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='user_id']" position="after">
+                <field name="department_id" />
+            </xpath>
+        </field>
+    </record>
+</odoo>
