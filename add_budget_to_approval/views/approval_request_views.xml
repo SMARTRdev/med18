@@ -1,0 +1,23 @@
+<odoo>
+    <record id="view_budget_approval_request_form" model="ir.ui.view">
+        <field name="name">view.budget.approval.request.form</field>
+        <field name="model">approval.request</field>
+        <field name="inherit_id" ref="approvals.approval_request_view_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='has_product']" position="after">
+                <field name="has_budget" invisible="1"/>
+                <field name="has_budget_line_no" invisible="1"/>
+            </xpath>
+
+            <xpath expr="//field[@name='category_id']" position="after">
+                <field name="budget_id" options="{'no_open':True,'no_create':True}" invisible="has_budget == 'no'"
+                       required="has_budget == 'required'" readonly="id"/>
+            </xpath>
+
+            <xpath expr="//field[@name='approver_ids']/list/field[@name='user_id']" position="after">
+                <field name="budget_id" force_save="1"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

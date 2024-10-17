@@ -1,0 +1,12 @@
+<odoo>
+    <record id="view_budget_approval_category_approver_tree" model="ir.ui.view">
+        <field name="name">view.budget.approval.category.approver.tree</field>
+        <field name="model">approval.category.approver</field>
+        <field name="inherit_id" ref="approvals.approval_category_approver_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='user_id']" position="after">
+                <field name="budget_id" options="{'no_open':True,'no_create':True}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
