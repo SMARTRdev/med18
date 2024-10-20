@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_level_responsibility,hr.level.responsibility,model_hr_level_responsibility,base.group_user,1,1,1,1
+access_hr_job_family,hr.job.family,model_hr_job_family,base.group_user,1,1,1,1
+access_hr_salary_grade_level,hr.salary.grade,model_hr_salary_grade_level,base.group_user,1,1,1,1
+access_hr_salary_grade,hr.salary.grade,model_hr_salary_grade,base.group_user,1,1,1,1
+access_hr_salary_allowance,hr.salary.allowance,model_hr_salary_allowance,base.group_user,1,1,1,1
+access_hr_former_employee,hr.former.employee,model_hr_former_employee,base.group_user,1,1,1,1
+

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_hr_level_responsibility_list" model="ir.ui.view">
+        <field name="name">view.hr.level.responsibility.list</field>
+        <field name="model">hr.level.responsibility</field>
+        <field name="arch" type="xml">
+            <list string="Level of Responsibility" editable="bottom">
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_hr_level_responsibility" model="ir.actions.act_window">
+        <field name="name">Level of Responsibility</field>
+        <field name="res_model">hr.level.responsibility</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_hr_job_family_list" model="ir.ui.view">
+        <field name="name">view.hr.job.family.list</field>
+        <field name="model">hr.job.family</field>
+        <field name="arch" type="xml">
+            <list string="Job Position Family" editable="bottom">
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_hr_job_family" model="ir.actions.act_window">
+        <field name="name">Job Position Family</field>
+        <field name="res_model">hr.job.family</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_hr_salary_grade_list" model="ir.ui.view">
+        <field name="name">view.hr.salary.grade.list</field>
+        <field name="model">hr.salary.grade</field>
+        <field name="arch" type="xml">
+            <list string="Salary Grade">
+                <field name="name"/>
+                <field name="level_responsibility_id" optional="show"/>
+                <field name="salary_grade_level_id" optional="show"/>
+                <field name="job_family_id" optional="show"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_hr_salary_grade_form" model="ir.ui.view">
+        <field name="name">view.hr.salary.grade.form</field>
+        <field name="model">hr.salary.grade</field>
+        <field name="arch" type="xml">
+            <form string="Salary Grade">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" string="Salary Grade"/>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group>
+                            <field name="level_responsibility_id"/>
+                            <field name="salary_grade_level_id"/>
+                        </group>
+                        <group>
+                            <field name="job_family_id"/>
+                            <field name="salary_range_min"/>
+                            <field name="salary_range_max"/>
+                            <field name="company_id" groups="base.group_multi_company"
+                                   options="{'no_create': True, 'no_open': True}"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+
+                    <group>
+                        <field name="skills_knowledge"/>
+                        <field name="experience"/>
+                        <field name="education"/>
+                        <field name="language_proficiency"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_hr_salary_grade" model="ir.actions.act_window">
+        <field name="name">Salary Grade</field>
+        <field name="res_model">hr.salary.grade</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_hr_salary_allowance" model="ir.actions.act_window">
+        <field name="name">Salary Allowance</field>
+        <field name="res_model">hr.salary.allowance</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_hr_salary_grade_level_list" model="ir.ui.view">
+        <field name="name">view.hr.salary.grade.level.list</field>
+        <field name="model">hr.salary.grade.level</field>
+        <field name="arch" type="xml">
+            <list string="Salary Grade Level" editable="bottom">
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_hr_salary_grade_levels" model="ir.actions.act_window">
+        <field name="name">Salary Grade Levels</field>
+        <field name="res_model">hr.salary.grade.level</field>
+        <field name="view_mode">list</field>
+    </record>
+
+    <menuitem id="menu_hr_level_responsibility"
+              name="Level of Responsibility"
+              parent="hr_recruitment.menu_hr_recruitment_config_employees"
+              sequence="10"
+              action="action_hr_level_responsibility"/>
+
+    <menuitem id="menu_hr_job_family"
+              name="Job Position Family"
+              parent="hr_recruitment.menu_hr_recruitment_config_employees"
+              sequence="11"
+              action="action_hr_job_family"/>
+
+    <menuitem id="menu_hr_salary_grade_levels"
+              name="Salary Grade Levels"
+              parent="hr_recruitment.menu_hr_recruitment_config_employees"
+              sequence="12"
+              action="action_hr_salary_grade_levels"/>
+
+    <menuitem id="hr_salary_grade"
+              name="Salary Grade"
+              parent="hr_recruitment.menu_hr_recruitment_config_employees"
+              sequence="13"
+              action="action_hr_salary_grade"/>
+
+    <menuitem id="hr_salary_allowance"
+              name="Salary Allowance"
+              sequence="14"
+              parent="hr_recruitment.menu_hr_recruitment_config_employees"
+              action="action_hr_salary_allowance"/>
+
+</odoo>

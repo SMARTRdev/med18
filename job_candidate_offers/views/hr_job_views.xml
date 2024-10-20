@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_job_candidate_offers_hr_job_form" model="ir.ui.view">
+        <field name="name">view.job.candidate.offers.hr.job.form</field>
+        <field name="model">hr.job</field>
+        <field name="inherit_id" ref="hr.view_hr_job_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='recruitment2']" position="inside">
+                <field name="level_responsibility_id" options="{'no_create': True, 'no_open': True}"/>
+                <field name="job_family_id" options="{'no_create': True, 'no_open': True}"/>
+                <field name="salary_grade_id" options="{'no_create': True, 'no_open': True}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

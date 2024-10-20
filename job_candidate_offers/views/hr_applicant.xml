@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- Inherit Form View to Modify it -->
+    <record id="candidate_offers_hr_applicant_view_form" model="ir.ui.view">
+        <field name="name">candidate.offers.hr.applicant.view.form</field>
+        <field name="model">hr.applicant</field>
+        <field name="inherit_id" ref="hr_recruitment.hr_applicant_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button string="Print Offer Letter" name="%(action_report_offer_letter)d" type="action"/>
+                <button string="Print Appointment Letter" name="action_print_appointment_letter" type="object"/>
+                <button name="action_upload_letter_document"
+                        string="Upload Offer/Appointment Letter" type="object"
+                        class="oe_highlight"/>
+            </xpath>
+
+            <xpath expr="//field[@name='linkedin_profile']" position="after">
+                <field name="country_office"/>
+                <field name="salary_grade" required="1"/>
+                <field name="contract_type" required="1"/>
+                <field name="working_hours" required="1" string="Working Hours(Weekly)"/>
+                <field name="total_monthly_cost" required="1"/>
+                <field name="salary_amount" required="1"/>
+                <field name="has_allowance"/>
+                <field name="allowance_ids" widget="many2many_tags"
+                       invisible="not has_allowance" required="has_allowance"/>
+            </xpath>
+
+            <xpath expr="//field[@name='email_from']" position="before">
+                <field name="nationality"/>
+            </xpath>
+
+            <xpath expr="//field[@name='categ_ids']" position="after">
+                <field name="replaced_personal_id"/>
+                <field name="first_interviewer_id"/>
+                <field name="second_interviewer_id"/>
+                <field name="is_referral"/>
+                <field name="referred_by" invisible="not is_referral"/>
+                <field name="is_position_in_rec_plan" string="Is this position mentioned in the recruitment plan?"/>
+                <field name="is_replacement" invisible="is_position_in_rec_plan"/>
+                <field name="former_employee_id" string="Replaced Personnel"
+                       invisible="not is_replacement" required="is_replacement"/>
+                <field name="is_ref_checked"/>
+                <field name="is_security_checked"/>
+                <field name="has_relatives"/>
+                <field name="relatives_ids" invisible="not has_relatives" required="has_relatives">
+                    <list string="Relatives" create="1" edit="1">
+                        <field name="company_id" invisible="1" column_invisible="True"/>
+                        <field name="name"/>
+                        <field name="job_id"/>
+                    </list>
+                </field>
+            </xpath>
+
+            <xpath expr="//group[@name='recruitment_contract']" position="before">
+                <group string="FINANCIAL COVERAGE" name="financial_coverage">
+                    <field name="fin_cover_until" string="Financial Coverage Until"/>
+                    <field name="project_name"/>
+                    <field name="budget_line"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_document_upload_offer_letter_form" model="ir.ui.view">
+        <field name="name">view.document.upload.offer.letter.form</field>
+        <field name="model">documents.document</field>
+        <field name="mode">primary</field>
+        <field name="inherit_id" ref="documents.document_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='datas']" position="after">
+            </xpath>
+
+            <xpath expr="//field[@name='datas']" position="attributes">
+                <attribute name="options">{'accepted_file_extensions': '.pdf,.docs,.docx'}</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>
