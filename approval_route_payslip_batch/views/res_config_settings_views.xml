@@ -1,0 +1,17 @@
+<odoo>
+    <record id="view_approval_route_payslip_batch_res_config_settings_form" model="ir.ui.view">
+        <field name="name">view.approval.route.payslip.batch.res_config.settings.form</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="25"/>
+        <field name="inherit_id" ref="hr_payroll.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <block id="hr_payroll_settings" position="inside">
+                <setting string="Use Approval Route for Payslip Batch" id="use_approval_route_payslip_batch"
+                         title="Use Dynamic Approval Route for Payslip Batch">
+                    <field name="use_approval_route_payslip_batch"/>
+                </setting>
+            </block>
+        </field>
+    </record>
+
+</odoo>

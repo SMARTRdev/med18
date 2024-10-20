@@ -1,0 +1,41 @@
+<odoo>
+    <record id="view_hr_payslip_batch_report_payslip_run_form" model="ir.ui.view">
+        <field name="name">view.hr.payslip.batch.report.payslip.run.form</field>
+        <field name="model">hr.payslip.run</field>
+        <field name="inherit_id" ref="hr_payroll.hr_payslip_run_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_submit_approval" type="object" string="Submit for Approval"
+                        invisible="state != 'verify'" class="oe_highlight"/>
+                <button name="action_approve" type="object" string="Approve"
+                        invisible="not can_approve or state != 'under_approval'" class="oe_highlight"/>
+            </xpath>
+
+            <xpath expr="//button[@name='action_validate']" position="attributes">
+                <attribute name="invisible">state != 'approved'</attribute>
+            </xpath>
+
+            <xpath expr="//button[@name='action_draft']" position="attributes">
+                <attribute name="invisible">state not in ('verify','approved', 'close')</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='country_id']" position="before">
+                <field name="use_approval_route" invisible="1"/>
+                <field name="can_approve" invisible="1"/>
+                <field name="company_id" invisible="1"/>
+                <field name="approval_route_id" invisible="use_approval_route == 'no'" readonly="state != 'draft'"
+                       required="use_approval_route == 'required'"/>
+            </xpath>
+
+            <xpath expr="//sheet" position="inside">
+                <notebook>
+                    <page name="approval_route" string="Approval Route"
+                          invisible="state in ['draft','verify'] or not approval_route_id">
+                        <field name="approval_route_stage_ids"/>
+                        <field name="is_current_approver" invisible="True"/>
+                    </page>
+                </notebook>
+            </xpath>
+        </field>
+    </record>
+</odoo>
