@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="short_listing_approvals_approval_request_form" model="ir.ui.view">
+        <field name="name">short.listing.approvals.approval.request.form</field>
+        <field name="model">approval.request</field>
+        <field name="inherit_id" ref="approvals.approval_request_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='budget_id']" position="after">
+                <field name="job_id"
+                       string="Job Title"
+                       readonly="request_status != 'new'"
+                       invisible="approval_type not in ['short_listing']"/>
+            </xpath>
+
+            <xpath expr="//notebook/page[@name='description']"  position="before">
+                <page string="Shortlisted Candidates"
+                      name="shortlisted_candidates"
+                      invisible="approval_type != 'short_listing'">
+                    <group no_label="1">
+                        <field name="can_access_short_listed" invisible="1"/>
+                        <field name="approval_type" invisible="1"/>
+                        <field name="pre_short_listed_ids"
+                               invisible="approval_type != 'short_listing' or not can_access_short_listed"
+                               mode="list"
+                               string="">
+                            <list no_open="True" editable="bottom" create="0">
+                                <field name="partner_name" string="Name"/>
+                                <field name="type_id"/>
+                                <field name="years_of_experience" string="Experience"/>
+                                <field name="first_interview_datetime" string="First Interview" widget="date"/>
+                                <field name="second_interview_datetime" string="Second Interview" widget="date"/>
+                                <field name="availability" string="Starting Date"/>
+                                <field name="period_of_contract" string="Contract Period"/>
+                                <field name="salary_expected"/>
+                                <field name="priority"/>
+                                <field name="ranking" readonly="0"/>
+                                <field name="applicant_notes"/>
+                            </list>
+                        </field>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,15 @@
+<odoo>
+    <record id="view_shortlisting_approval_request_approval_category_form" model="ir.ui.view">
+        <field name="name">view.shortlisting.approval.request.approval.category.form</field>
+        <field name="model">approval.category</field>
+        <field name="inherit_id" ref="approvals.approval_category_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='approval_type']" position="after">
+                <field name="get_candidates_from_stage_id" options="{'no_open':True,'no_create':True}"
+                       invisible="approval_type != 'short_listing'" required="approval_type == 'short_listing'"/>
+                <field name="move_candidates_to_stage_id" options="{'no_open':True,'no_create':True}"
+                       invisible="approval_type != 'short_listing'" required="approval_type == 'short_listing'"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
