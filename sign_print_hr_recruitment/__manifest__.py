@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Sign & Print Template",
+    'name': "Sign & Print Recruitment",
 
-    'summary': """Sign & Print Template""",
+    'summary': """Sign & Print Recruitment""",
 
     'description': """
-        Sign & Print Template
+        Sign & Print Recruitment
     """,
 
     'author': "SMARTR Teknoloji",
@@ -14,14 +14,13 @@
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/14.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
-    'category': 'Sales/Sign',
+    'category': 'Human Resources/Recruitment',
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['assign_contact_sign'],
+    'depends': ['hr_recruitment', 'sign_print_template'],
     # always loaded
     'data': [
-        'security/ir.model.access.csv',
-        'wizard/sign_print_template_views.xml'
+        'views/hr_applicant_views.xml'
     ]
 }

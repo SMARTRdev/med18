@@ -1,0 +1,24 @@
+<odoo>
+    <record id="view_sign_print_hr_recruitment_hr_applicant_form" model="ir.ui.view">
+        <field name="name">view.sign.print.hr.recruitment.hr.applicant.form</field>
+        <field name="model">hr.applicant</field>
+        <field name="inherit_id" ref="hr_recruitment.hr_applicant_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_sign_print_document" string="Sign &amp; Print" type="object" class="oe_highlight"/>
+            </xpath>
+
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_get_sign_requests" type="object" groups="sign.group_sign_user"
+                        class="oe_stat_button" icon="fa-pencil" invisible="sign_print_request_count == 0">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_value">
+                            <field name="sign_print_request_count"/>
+                        </span>
+                        <span class="o_stat_text">Sign &amp; Print Requests</span>
+                    </div>
+                </button>
+            </xpath>
+        </field>
+    </record>
+</odoo>
