@@ -121,7 +121,7 @@ class HrApplicant(models.Model):
     salary_amount = fields.Integer()
     fin_cover_until = fields.Date()
     project_name = fields.Char()
-    budget_line = fields.Many2one('crossovered.budget.lines')
+    budget_line = fields.Many2one("budget.line")
 
     def _prepare_appointment_letter_fields_required(self):
         return {
