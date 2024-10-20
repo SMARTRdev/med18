@@ -1,0 +1,21 @@
+<odoo>
+    <record id="view_base_modules_approvals_approval_category_form" model="ir.ui.view">
+        <field name="name">view.base.modules.approvals.approval.category.form</field>
+        <field name="model">approval.category</field>
+        <field name="inherit_id" ref="approvals.approval_category_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='approval_type']" position="after">
+                <field name="model_id" options="{'no_open':True,'no_create':True}"
+                       invisible="approval_type != 'model'" required="approval_type == 'model'"/>
+            </xpath>
+
+            <xpath expr="//group[@name='option_settings']" position="attributes">
+                <attribute name="invisible">approval_type == 'model'</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="approvals.approval_category_action_new_request" model="ir.actions.act_window">
+        <field name="domain">[('approval_type','!=','model')]</field>
+    </record>
+</odoo>
