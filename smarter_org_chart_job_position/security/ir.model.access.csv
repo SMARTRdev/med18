@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_smarter_org_chart_job_position_smarter_org_chart_job_position,smarter_org_chart_job_position.smarter_org_chart_job_position,model_smarter_org_chart_job_position_smarter_org_chart_job_position,base.group_user,1,1,1,1

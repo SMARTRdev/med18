@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="act_employee_from_job_position" model="ir.actions.act_window">
+            <field name="name">Employees</field>
+            <field name="res_model">hr.employee</field>
+            <field name="view_mode">list,kanban,form</field>
+            <field name="search_view_id" ref="hr.view_employee_filter"/>
+            <field name="context">{
+                "searchpanel_default_job_id": active_id,
+                "default_job_id": active_id,
+                "search_default_group_job": 1,
+                "search_default_job_id": active_id,
+                "expand": 1}
+            </field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Add a new employee
+                </p><p>
+                    With just a quick glance on the Odoo employee screen, you
+                    can easily find all the information you need for each person;
+                    contact data, job position, availability, etc.
+                </p>
+            </field>
+        </record>
+
+        <record id="job_position_hierarchy_action" model="ir.actions.act_window">
+            <field name="name">Job Positions</field>
+            <field name="res_model">hr.job</field>
+            <field name="view_mode">hierarchy</field>
+        </record>
+
+        <record id="hr_job_positions_view_hierarchy" model="ir.ui.view">
+            <field name="name">hr.job.positions.view.hierarchy</field>
+            <field name="model">hr.job</field>
+            <field name="arch" type="xml">
+                <hierarchy child_field="child_ids" draggable="1">
+                    <field name="name" />
+                    <field name="color" />
+                    <field name="no_of_employee" />
+                    <templates>
+                        <t t-name="hierarchy-box">
+                            <div t-attf-class="o_hierarchy_node_header d-flex justify-content-center
+                                o_hierarchy_node_color_{{ record.color.raw_value }}
+                                align-items-center" t-att-title="parent_id">
+                                <field name="name" />
+                            </div>
+                            <div class="o_hierarchy_node_body d-flex flex-column">
+                                <div>
+                                    <button class="btn btn-link" name="%(act_employee_from_job_position)d" type="action">
+                                        <span> <field name="no_of_employee"/> Employees</span>
+                                    </button>
+                                    <span style="padding:0px 25px"/>
+                                     <span style="color:#017e84;font-weight: 500;"> <field name="no_of_recruitment"/> Vacant</span>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </hierarchy>
+            </field>
+        </record>
+
+        <menuitem id="hr_job_positions_hierarchy"
+                  name="Job Positions Chart"
+                  parent="hr.menu_hr_employee_payroll"
+                  action="job_position_hierarchy_action"
+                  sequence="6"/>
+
+
+    </data>
+</odoo>

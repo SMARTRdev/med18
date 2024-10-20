@@ -46,7 +46,7 @@ class HrJob(models.Model):
     has_job_description = fields.Boolean(compute="_compute_document_ids")
 
     def _compute_document_ids(self):
-        applicants = self.mapped('application_ids').filtered(lambda self: not self.emp_id)
+        applicants = self.mapped('application_ids').filtered(lambda self: not self.employee_id)
         app_to_job = dict((applicant.id, applicant.job_id.id) for applicant in applicants)
         attachments = self.env['ir.attachment'].search([
             '|',

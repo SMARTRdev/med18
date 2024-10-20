@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="view_hr_job_form_hierarchy_inherit" model="ir.ui.view">
+            <field name="name">view.hr.job.form.hierarchy.inherit</field>
+            <field name="model">hr.job</field>
+            <field name="inherit_id" ref="hr.view_hr_job_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='department_id']" position="before">
+                    <field name="is_root"/>
+                    <field name="parent_id" string="Manager Role" required="not is_root" invisible="is_root"/>
+                    <field name="force_manual" />
+                    <field name="manual_hierarchy_level" invisible="not force_manual"/>
+                    <field name="hierarchy_level" />
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
