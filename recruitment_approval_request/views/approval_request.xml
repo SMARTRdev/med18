@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_recruitment_approvals_approval_request_form" model="ir.ui.view">
+        <field name="name">view.recruitment.approvals.approval.request.form</field>
+        <field name="model">approval.request</field>
+        <field name="inherit_id" ref="approvals.approval_request_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='request_owner_id']" position="attributes">
+                <attribute name="readonly">1</attribute>
+            </xpath>
+
+            <xpath expr="//header" position="inside">
+                <field name="show_submit_button" invisible="1"/>
+            </xpath>
+
+            <xpath expr="//header/button[@name='action_confirm'][1]" position="attributes">
+                <attribute name="invisible">
+                    attachment_number &lt; 1 or not approver_ids or request_status != 'new' or not show_submit_button
+                </attribute>
+            </xpath>
+
+            <xpath expr="//header/button[@name='action_confirm'][2]" position="attributes">
+                <attribute name="invisible">
+                    attachment_number &gt;= 1 or not approver_ids or request_status != 'new' or not show_submit_button
+                </attribute>
+            </xpath>
+
+            <xpath expr="//notebook/page[@name='description']" position="before">
+                <page string="Recruitment Requests" name="job_positions" invisible="approval_type != 'recruitment'">
+                    <field name="job_line_ids" readonly="request_status != 'new'">
+                        <list>
+                            <field name="approval_request_id" column_invisible="1" invisible="1"/>
+                            <field name="available_departments_ids" column_invisible="1" invisible="1"/>
+                            <field name="show_add_button" column_invisible="1" invisible="1"/>
+                            <field name="job_id" string="Job Title" optional="show"/>
+                            <field name="company_id" column_invisible="1" invisible="1"/>
+                            <field name="quantity" optional="show"/>
+                            <field name="department_id" domain="[('id', 'in', available_departments_ids or False)]"
+                                   optional="show"/>
+                            <field name="manager_id" optional="show"/>
+                            <field name="currency_id" column_invisible="1" invisible="1"/>
+                            <field name="salary_range_min" optional="show"/>
+                            <field name="salary_range_max" optional="show"/>
+                            <field name="job_address" optional="show" string="Work Address"/>
+                            <field name="job_location" optional="show" string="Work Location"/>
+                            <field name="expected_joining_Date" optional="show"/>
+                            <button name="action_add_skill" type="object" string="Add Skill"
+                                    invisible="not show_add_button"
+                                    class="oe_highlight btn-secondary"/>
+                            <button name="action_show_skills"
+                                    type="object"
+                                    string="Skills"
+                                    class="oe_highlight btn-primary"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>
