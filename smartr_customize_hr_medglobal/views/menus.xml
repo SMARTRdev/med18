@@ -1,0 +1,7 @@
+<odoo>
+    <menuitem id="menu_approval_main_category" name="Main Categories" parent="approvals.approvals_menu_config"
+              action="action_approval_main_category" sequence="20"/>
+
+    <menuitem id="menu_hr_department_function" name="Department Functions" parent="hr.menu_hr_root"
+              action="action_hr_department_function" sequence="20" groups="hr.group_hr_user"/>
+</odoo>

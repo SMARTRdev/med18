@@ -1,0 +1,26 @@
+<odoo>
+    <record id="view_smartr_customize_hr_medglobal_leave_manager_form" model="ir.ui.view">
+        <field name="name">view.smartr.customize.hr.medglobal.leave.manager.form</field>
+        <field name="model">hr.leave</field>
+        <field name="inherit_id" ref="hr_holidays.hr_leave_view_form_manager"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='payslip_state']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_smartr_customize_hr_medglobal_leave_form" model="ir.ui.view">
+        <field name="name">view.smartr.customize.hr.medglobal.leave.form</field>
+        <field name="model">hr.leave</field>
+        <field name="inherit_id" ref="hr_holidays.hr_leave_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='supported_attachment_ids']" position="after">
+                <field name="required_document" invisible="1" />
+            </xpath>
+            <xpath expr="//field[@name='supported_attachment_ids']" position="attributes">
+                <attribute name="required">required_document</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

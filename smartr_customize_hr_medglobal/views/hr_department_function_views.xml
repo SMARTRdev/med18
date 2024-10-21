@@ -1,0 +1,17 @@
+<odoo>
+    <record id="view_hr_department_function_tree" model="ir.ui.view">
+        <field name="name">view.hr.department.function.form</field>
+        <field name="model">hr.department.function</field>
+        <field name="arch" type="xml">
+            <list string="Department Function" editable="bottom">
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_hr_department_function" model="ir.actions.act_window">
+        <field name="name">Department Functions</field>
+        <field name="res_model">hr.department.function</field>
+        <field name="view_mode">list</field>
+    </record>
+</odoo>

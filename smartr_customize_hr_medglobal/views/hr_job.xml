@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="customize_view_hr_job_kanban_inherit" model="ir.ui.view">
+        <field name="name">hr.job.kanban.inherit</field>
+        <field name="model">hr.job</field>
+        <field name="inherit_id" ref="hr_recruitment.view_hr_job_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='menu_new_applications']" position="after">
+                <field name="interview_scorecard_id" invisible="1"/>
+                <div role="menuitem" t-if="!record.interview_scorecard_id.raw_value">
+                    <a name="action_new_interview_scorecard"
+                       type="object" title="Display Interview Score Card Form">Scorecard Form</a>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_add_job_description_hr_job_form" model="ir.ui.view">
+        <field name="name">view.add.job.description.hr.job.form</field>
+        <field name="model">hr.job</field>
+        <field name="inherit_id" ref="hr.view_hr_job_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='recruitment_page']//field[@name='department_id']" position="after">
+                <field name="approved_scale"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_approval_main_category_tree" model="ir.ui.view">
+        <field name="name">view.approval.main.category.tree</field>
+        <field name="model">approval.main.category</field>
+        <field name="arch" type="xml">
+            <list string="Approval Main Category" editable="bottom">
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_approval_main_category" model="ir.actions.act_window">
+        <field name="name">Main Categories</field>
+        <field name="res_model">approval.main.category</field>
+        <field name="view_mode">list</field>
+    </record>
+
+    <record id="view_recruitment_approvals_approval_category_form" model="ir.ui.view">
+        <field name="name">view.recruitment.approvals.approval.category.form</field>
+        <field name="model">approval.category</field>
+        <field name="inherit_id" ref="approvals.approval_category_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='approval_type']" position="before">
+                <field name="approval_type"/>
+                <field name="main_category_id"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_recruitment_approvals_approval_category_kanban" model="ir.ui.view">
+        <field name="name">view.recruitment.approvals.approval.category.kanban</field>
+        <field name="model">approval.category</field>
+        <field name="inherit_id" ref="approvals.approval_category_view_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//kanban" position="attributes">
+                <attribute name="default_group_by">main_category_id</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

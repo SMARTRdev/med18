@@ -1,0 +1,26 @@
+<odoo>
+    <record id="view_smartr_customize_hr_medglobal_contract_form" model="ir.ui.view">
+        <field name="name">view.smartr.customize.hr.medglobal.contract.form</field>
+        <field name="model">hr.contract</field>
+        <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='top_info_right']" position="inside">
+                <field name="is_social_security_exempt"/>
+            </xpath>
+
+            <xpath expr="//notebook" position="inside">
+                <page name="salary_rule_accounts" string="Salary Rule Accounts" groups="account.group_account_manager">
+                    <field name="salary_rule_account_ids">
+                        <list string="HR Contract Salary Rule Account" editable="bottom">
+                            <field name="salary_rule_ids" widget="many2many_tags"
+                                   options="{'no_open':True,'no_create':True}"/>
+                            <field name="account_debit_id" options="{'no_open':True,'no_create':True}"/>
+                            <field name="account_credit_id" options="{'no_open':True,'no_create':True}"/>
+                            <field name="structure_type_id" column_invisible="1"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

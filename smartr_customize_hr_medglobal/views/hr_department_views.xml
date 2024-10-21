@@ -1,0 +1,37 @@
+<odoo>
+    <record id="view_smartr_customize_hr_medglobal_department_filter" model="ir.ui.view">
+        <field name="name">view.smartr.customize.hr.medglobal.department.filter</field>
+        <field name="model">hr.department</field>
+        <field name="inherit_id" ref="hr.view_department_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <searchpanel>
+                    <field name="company_id" groups="base.group_multi_company" icon="fa-building" enable_counters="1"/>
+                    <field name="department_function_id" icon="fa-users" enable_counters="1"/>
+                </searchpanel>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_smartr_customize_hr_medglobal_department_tree" model="ir.ui.view">
+        <field name="name">view.smartr.customize.hr.medglobal.department.tree</field>
+        <field name="model">hr.department</field>
+        <field name="inherit_id" ref="hr.view_department_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='parent_id']" position="after">
+                <field name="department_function_id"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_smartr_customize_hr_medglobal_department_form" model="ir.ui.view">
+        <field name="name">view.smartr.customize.hr.medglobal.department.form</field>
+        <field name="model">hr.department</field>
+        <field name="inherit_id" ref="hr.view_department_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='parent_id']" position="after">
+                <field name="department_function_id"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

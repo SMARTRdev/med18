@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="customize_medglobal_survey_question_form" model="ir.ui.view">
+        <field name="name">Medglobal Customized Form view for survey question</field>
+        <field name="model">survey.question</field>
+        <field name="inherit_id" ref="survey.survey_question_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='question_type']" position="after">
+                <field name="answer_score" invisible="scoring_type != 'interview_scoring'"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="customize_medglobal_survey_user_input_form" model="ir.ui.view">
+        <field name="name">Medglobal Customized Form view for survey user input</field>
+        <field name="model">survey.user_input</field>
+        <field name="inherit_id" ref="survey.survey_user_input_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='user_input_line_ids']" position="attributes">
+               <attribute name="readonly">0</attribute>
+            </xpath>
+            <xpath expr="//field[@name='user_input_line_ids']//list" position="attributes">
+               <attribute name="editable">bottom</attribute>
+               <attribute name="create">0</attribute>
+            </xpath>
+            <xpath expr="//field[@name='user_input_line_ids']//list//field[@name='question_id']" position="attributes">
+               <attribute name="readonly">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='user_input_line_ids']//list//field[@name='skipped']" position="attributes">
+               <attribute name="readonly">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='user_input_line_ids']//list//field[@name='answer_score']" position="before">
+                <field name="mark_weight" string="Mark Weight"/>
+            </xpath>
+            <xpath expr="//field[@name='user_input_line_ids']//list//field[@name='answer_score']" position="attributes">
+               <attribute name="string">Result</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

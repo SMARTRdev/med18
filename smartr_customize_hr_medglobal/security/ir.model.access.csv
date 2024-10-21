@@ -1,0 +1,13 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_approved_grading_scale,access_approved_grading_scale,model_approved_grading_scale,base.group_user,1,1,1,1
+hr.access_hr_employee_user,hr.employee user,model_hr_employee,hr.group_hr_user,1,1,0,1
+access_hr_department_function_group_hr_user,hr.department.function.group.hr.user,model_hr_department_function,hr.group_hr_user,1,1,1,1
+
+access_approval_approval_main_category_group_user,approval.main.category.group.user,model_approval_main_category,base.group_user,1,0,0,0
+access_hr_department_function_group_user,hr.department.function.group.user,model_hr_department_function,base.group_user,1,0,0,0
+access_hr_contract_salary_rule_account_group_user,hr.contract.salary.rule.account.group.user,model_hr_contract_salary_rule_account,base.group_user,1,0,0,0
+
+access_approval_approval_main_category_group_approval_manager,approval.main.category.group.approval.manager,model_approval_main_category,approvals.group_approval_manager,1,1,1,1
+
+access_hr_contract_salary_rule_account_group_user,hr.contract.salary.rule.account.group.user,model_hr_contract_salary_rule_account,base.group_user,1,0,0,0
+access_hr_contract_salary_rule_account_group_account_manager,hr.contract.salary.rule.account.group.account.manager,model_hr_contract_salary_rule_account,account.group_account_manager,1,1,1,1

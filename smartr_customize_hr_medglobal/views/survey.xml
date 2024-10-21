@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="medglobal_customize_survey_survey_view_form" model="ir.ui.view">
+        <field name="name">medglobal.customize.survey.survey.view.form</field>
+        <field name="model">survey.survey</field>
+        <field name="inherit_id" ref="survey.survey_survey_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='user_id']" position="after">
+                <field name="job_id" invisible="survey_type not in ['interview_scorecard', 'interview']"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,12 @@
+<odoo>
+    <record id="view_smartr_customize_hr_medglobal_leave_type_form" model="ir.ui.view">
+        <field name="name">view.smartr.customize.hr.medglobal.leave.type.form</field>
+        <field name="model">hr.leave.type</field>
+        <field name="inherit_id" ref="hr_holidays.edit_holiday_status_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='support_document']" position="after">
+                <field name="required_document_days" invisible="not support_document" />
+            </xpath>
+        </field>
+    </record>
+</odoo>

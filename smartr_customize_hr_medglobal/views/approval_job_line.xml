@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <!-- Inherit Form View to Modify it -->
+    <record id="medglobal_view_recruitment_approvals_approval_request_form" model="ir.ui.view">
+        <field name="name">medglobal.view.recruitment.approvals.approval.request.form</field>
+        <field name="model">approval.request</field>
+        <field name="inherit_id" ref="recruitment_approval_request.view_recruitment_approvals_approval_request_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <field name="approvers_computed" invisible="1"/>
+                <button string="Compute Approvers"
+                        type="object" name="update_final_approvers"
+                        invisible="approvers_computed"/>
+            </xpath>
+
+            <xpath expr="//notebook/page[@name='job_positions']/field[@name='job_line_ids']/list/field[@name='salary_range_min']"
+                   position="after">
+                <field name="approved_scale" readonly="True" string="Salary Grade" optional="hide"/>
+                <field name="percentage_of_travel" optional="hide"/>
+                <field name="anticipated_start_date" optional="hide"/>
+                <field name="anticipated_end_date" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Inherit Form View to Modify it -->
+    <record id="view_customize_unplanned_job_approval_job_line_form" model="ir.ui.view">
+        <field name="name">view.customize.unplanned.job.approval.job.line.form</field>
+        <field name="model">approval.job.line</field>
+        <field name="inherit_id" ref="change_job_target_approval.unplanned_job_approval_job_line_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='is_unplanned']" position="attributes">
+                <attribute name="invisible">is_new</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Inherit Form View to Modify it -->
+    <record id="view_medglobal_approval_job_line_form" model="ir.ui.view">
+        <field name="name">view.medglobal.approval.job.line.form</field>
+        <field name="model">approval.job.line</field>
+        <field name="inherit_id" ref="recruitment_approval_request.approval_job_line_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='expected_joining_Date']" position="after">
+                <field name="budget_line_id" domain="[('budget_analytic_id','=',parent.budget_id)]"/>
+                <field name="source_of_employment" string="Employment Source"/>
+                <field name="employment_reason"/>
+                <field name="incumbent_employee_id" invisible="employment_reason != 'replacement'"/>
+
+            </xpath>
+            <xpath expr="//field[@name='salary_range_min']" position="before">
+                <field name="salary_grade_id" options="{'no_create': True, 'no_open': True}"/>
+            </xpath>
+            <xpath expr="//field[@name='salary_range_max']" position="after">
+                <field name="proposed_salary" string="Proposed Salary"/>
+                <field name="anticipated_start_date"/>
+                <field name="anticipated_end_date"/>
+                <field name="approved_scale" readonly="True" string="Approved Scale"/>
+                <field name="percentage_of_travel" widget="percentage"/>
+                <field name="work_location" string="Job Nature"/>
+                <field name="work_schedule"/>
+                <field name="hours_per_week" invisible="work_schedule != 'part_time'"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

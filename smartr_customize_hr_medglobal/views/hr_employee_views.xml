@@ -1,0 +1,12 @@
+<odoo>
+    <record id="view_smartr_customize_hr_medglobal_employee_filter" model="ir.ui.view">
+        <field name="name">view.smartr.customize.hr.medglobal.employee.filter</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//searchpanel/field[@name='department_id']" position="before">
+                <field name="department_function_id" icon="fa-users" enable_counters="1"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

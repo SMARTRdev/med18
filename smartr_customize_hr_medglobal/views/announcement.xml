@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="medglobal_customize_view_hr_announcement_form" model="ir.ui.view">
+        <field name="name">medglobal.customize.view.hr.announcement.form</field>
+        <field name="model">hr.announcement</field>
+        <field name="inherit_id" ref="ent_hr_reward_warning.view_hr_announcement_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='company_id']" position="after">
+                <field name="is_internal_vacancy" invisible="1"/>
+                <field name="currency_id" column_invisible="1" invisible="1"/>
+                <field name="department_id" invisible="not is_internal_vacancy"
+                       readonly="state not in ['draft', 'to_approve']"/>
+                <field name="contract_duration" string="Contract Duration (Months)"
+                       readonly="state not in ['draft', 'to_approve']"
+                       invisible="not is_internal_vacancy"/>
+                <field name="salary_scale" invisible="not is_internal_vacancy"
+                       readonly="state not in ['draft', 'to_approve']"/>
+            </xpath>
+
+            <xpath expr="//field[@name='announcement_type']" position="after">
+                <field name="category_id" readonly="state != 'draft'"/>
+                <field name="company_id" invisible="1"/>
+                <field name="job_id" invisible="not is_internal_vacancy"
+                       readonly="state not in ['draft', 'to_approve']"/>
+                <field name="job_code" invisible="not is_internal_vacancy"
+                       readonly="state not in ['draft', 'to_approve']"/>
+                <field name="job_address" invisible="not is_internal_vacancy"
+                       readonly="state not in ['draft', 'to_approve']"/>
+                <field name="job_location" invisible="not is_internal_vacancy"
+                       readonly="state not in ['draft', 'to_approve']"/>
+            </xpath>
+
+            <xpath expr="//notebook/page[@name='announcement']" position="before">
+                <page name="announcement_message" string="Message">
+                    <group>
+                        <field name="announcement_message" string="Announcement Message"
+                               readonly="state not in ['draft', 'to_approve']"/>
+                    </group>
+                </page>
+
+                <page name="job_description"
+                      string="Job Description And Specification"
+                      invisible="not is_internal_vacancy">
+                    <group>
+                        <field name="job_description"
+                               readonly="state not in ['draft', 'to_approve']"
+                               string="Description And Specification"/>
+                    </group>
+                </page>
+            </xpath>
+
+            <xpath expr="//field[@name='announcement_reason']" position="attributes">
+                <attribute name="readonly">state not in ['draft', 'to_approve']</attribute>
+            </xpath>
+            <xpath expr="//field[@name='date_start']" position="attributes">
+                <attribute name="readonly">state not in ['draft', 'to_approve']</attribute>
+            </xpath>
+            <xpath expr="//field[@name='date_end']" position="attributes">
+                <attribute name="readonly">state not in ['draft', 'to_approve']</attribute>
+            </xpath>
+            <xpath expr="//field[@name='announcement_type']" position="attributes">
+                <attribute name="readonly">state not in ['draft', 'to_approve']</attribute>
+            </xpath>
+            <xpath expr="//field[@name='employee_ids']" position="attributes">
+                <attribute name="readonly">state not in ['draft', 'to_approve']</attribute>
+            </xpath>
+            <xpath expr="//field[@name='department_ids']" position="attributes">
+                <attribute name="readonly">state not in ['draft', 'to_approve']</attribute>
+            </xpath>
+            <xpath expr="//field[@name='position_ids']" position="attributes">
+                <attribute name="readonly">state not in ['draft', 'to_approve']</attribute>
+            </xpath>
+            <xpath expr="//field[@name='announcement']" position="attributes">
+                <attribute name="readonly">state not in ['draft', 'to_approve']</attribute>
+            </xpath>
+            <xpath expr="//field[@name='is_announcement']" position="attributes">
+                <attribute name="readonly">state not in ['draft', 'to_approve']</attribute>
+            </xpath>
+            <xpath expr="//field[@name='attachment_id']" position="attributes">
+                <attribute name="readonly">state not in ['draft', 'to_approve']</attribute>
+            </xpath>
+
+             <xpath expr="//sheet/div[hasclass('oe_title')]" position="before">
+                 <widget name="web_ribbon" title="Expired"
+                         invisible="state != 'expired'"
+                         bg_color="text-bg-warning"/>
+             </xpath>
+
+            <xpath expr="//sheet/div[hasclass('oe_title')]" position="before">
+                 <widget name="web_ribbon" title="Approved"
+                         invisible="state != 'approved'"
+                         bg_color="text-bg-success"/>
+            </xpath>
+
+            <xpath expr="//sheet/div[hasclass('oe_title')]" position="before">
+                 <widget name="web_ribbon" title="Rejected"
+                         invisible="state != 'rejected'"
+                         bg_color="text-bg-danger"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
