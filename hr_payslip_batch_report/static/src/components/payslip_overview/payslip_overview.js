@@ -6,6 +6,13 @@ import { formatMonetary } from "@web/views/fields/formatters";
 import { Component } from "@odoo/owl";
 
 export class PayslipOverview extends Component {
+    static template = "hr_payslip_batch_report.PayslipOverview";
+    static props = {
+        showOptions: Object,
+        reportColumns: Object,
+        payslip: Object
+    };
+
     setup() {
         this.actionService = useService("action");
         this.ormService = useService("orm");
@@ -36,11 +43,3 @@ export class PayslipOverview extends Component {
         });
     }
 }
-
-
-PayslipOverview.template = "hr_payslip_batch_report.PayslipOverview";
-PayslipOverview.props = {
-    showOptions: Object,
-    reportColumns: Object,
-    payslip: Object
-};

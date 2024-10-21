@@ -6,6 +6,21 @@ import { Component } from "@odoo/owl";
 import { formatMonetary } from "@web/views/fields/formatters";
 
 export class PayslipBatchOverviewTable extends Component {
+    static template = "hr_payslip_batch_report.PayslipBatchOverviewTable";
+    static components = {
+        PayslipOverview,
+    };
+    static props = {
+        showOptions: Object,
+        reportColumns: Object,
+        totalReportColumns: Object,
+        payslips: Object,
+        batchNumber: { type: String, optional: true },
+        batchDate: { type: String, optional: true },
+        batchID: { type: Number, optional: true },
+        currencyID: Number
+    };
+
     setup() {
         this.actionService = useService("action");
         this.formatMonetary = (val) => formatMonetary(val, { currencyId: this.props.currencyID });
@@ -43,19 +58,3 @@ export class PayslipBatchOverviewTable extends Component {
         });
     }
 }
-
-PayslipBatchOverviewTable.template = "hr_payslip_batch_report.PayslipBatchOverviewTable";
-PayslipBatchOverviewTable.components = {
-    PayslipOverview
-};
-
-PayslipBatchOverviewTable.props = {
-    showOptions: Object,
-    reportColumns: Object,
-    totalReportColumns: Object,
-    payslips: Object,
-    batchNumber: { type: String, optional: true },
-    batchDate: { type: String, optional: true },
-    batchID: { type: Number, optional: true },
-    currencyID: Number
-};

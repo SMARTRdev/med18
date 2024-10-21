@@ -1,12 +1,20 @@
 /** @odoo-module **/
 
 import { registry } from "@web/core/registry";
-import { useService } from "@web/core/utils/hooks";
+import { useService, useBus } from "@web/core/utils/hooks";
 import { PayslipBatchOverviewControlPanel } from "../payslip_batch_overview_control_panel/payslip_batch_overview_control_panel";
 import { PayslipBatchOverviewTable } from "../payslip_batch_overview_table/payslip_batch_overview_table";
 import { Component, EventBus, onWillStart, useSubEnv, useState } from "@odoo/owl";
+import { standardActionServiceProps } from "@web/webclient/actions/action_service";
 
 export class PayslipBatchOverviewComponent extends Component {
+    static template = "hr_payslip_batch_report.PayslipBatchOverviewComponent";
+    static components = {
+        PayslipBatchOverviewControlPanel,
+        PayslipBatchOverviewTable,
+    };
+    static props = { ...standardActionServiceProps };
+
     setup() {
         this.orm = useService("orm");
         this.actionService = useService("action");
@@ -84,12 +92,5 @@ export class PayslipBatchOverviewComponent extends Component {
         return reportName;
     }
 }
-
-
-PayslipBatchOverviewComponent.template = "hr_payslip_batch_report.PayslipBatchOverviewComponent";
-PayslipBatchOverviewComponent.components = {
-    PayslipBatchOverviewControlPanel,
-    PayslipBatchOverviewTable,
-};
 
 registry.category("actions").add("report_payslip_batch", PayslipBatchOverviewComponent);
