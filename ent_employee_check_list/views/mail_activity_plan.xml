@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="inherit_hr_mail_activity_plan_view_form_hr_employee_checklist" model="ir.ui.view">
+            <field name="name">inherit.hr.mail.activity.plan.view.form.hr.employee.checklist</field>
+            <field name="model">mail.activity.plan</field>
+            <field name="inherit_id" ref="hr.mail_activity_plan_view_form_hr_employee"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='department_id']" position="after">
+                    <field name="job_id"/>
+                    <field name="plan_type"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
