@@ -83,7 +83,7 @@ class ApprovalJobLine(models.Model):
             "type": "ir.actions.act_window",
             "res_model": "approval.job.skill",
             "views": [[self.env.ref("recruitment_approval_request.approval_job_skill_tree_view").id, "tree"]],
-            "view_mode": "tree",
+            "view_mode": "list",
             "domain": [["job_id", "=", self.id]],
             "target": "new"
         }
