@@ -1,0 +1,12 @@
+<odoo>
+    <record id="view_hr_payslip_batch_report_contract_form" model="ir.ui.view">
+        <field name="name">view.hr.payslip.batch.report.contract.form</field>
+        <field name="model">hr.contract</field>
+        <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='top_info_right']" position="inside">
+                <field name="payment_by_hq"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

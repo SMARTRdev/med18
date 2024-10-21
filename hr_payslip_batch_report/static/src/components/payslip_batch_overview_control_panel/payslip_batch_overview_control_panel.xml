@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="hr_payslip_batch_report.PayslipBatchOverviewControlPanel">
+        <ControlPanel display="controlPanelDisplay">
+            <t t-set-slot="control-panel-create-button">
+                <button t-on-click="() => this.props.print()" type="button" class="btn btn-primary">Print</button>
+            </t>
+            <t t-set-slot="control-panel-navigation-additional">
+                <div class="d-flex gap-1 w-100 w-sm-auto">
+                    <div class="col d-flex gap-1">
+                        <PayslipBatchOverviewDisplayFilter
+                            showOptions="props.showOptions"
+                            displayOptions="props.displayOptions"
+                            changeDisplay.bind="props.changeDisplay"/>
+                    </div>
+                </div>
+            </t>
+        </ControlPanel>
+    </t>
+</templates>

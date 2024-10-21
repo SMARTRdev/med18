@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <div t-name="hr_payslip_batch_report.PayslipBatchOverviewComponent" class="o_action">
+        <PayslipBatchOverviewControlPanel
+                showOptions="state.showOptions"
+                displayOptions="state.displayOptions"
+                changeDisplay.bind="onChangeDisplay"
+                print.bind="onClickPrint"/>
+
+        <PayslipBatchOverviewTable
+                showOptions="state.showOptions"
+                reportColumns="state.reportColumns"
+                totalReportColumns="state.totalReportColumns"
+                payslips="state.payslipBatchData"
+                batchID="activeId"
+                batchNumber="batchNumber"
+                batchDate="batchDate"
+                currencyID="currencyID"/>
+    </div>
+</templates>

@@ -1,0 +1,50 @@
+<odoo>
+    <record id="view_hr_payslip_batch_report_column_list" model="ir.ui.view">
+        <field name="name">view.hr.payslip.batch.report.column.list</field>
+        <field name="model">hr.payslip.batch.report.column</field>
+        <field name="arch" type="xml">
+            <list string="Payslip Batch Report Column">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="optional_display" optional="hide"/>
+                <field name="net_salary" optional="hide"/>
+                <field name="rule_ids" widget="many2many_tags"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_hr_payslip_batch_report_column_form" model="ir.ui.view">
+        <field name="name">view.hr.payslip.batch.report.column.form</field>
+        <field name="model">hr.payslip.batch.report.column</field>
+        <field name="arch" type="xml">
+            <form string="Payslip Batch Report Column">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Name..."/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group>
+                            <field name="rule_ids" widget="many2many_tags" options="{'no_open':True,'no_create':True}"/>
+                            <field name="company_ids" widget="many2many_tags" groups="base.group_multi_company"
+                                   options="{'no_open':True,'no_create':True}"/>
+                        </group>
+                        <group>
+                            <field name="net_salary"/>
+                            <field name="optional_display"/>
+                            <field name="sequence"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_payslip_batch_report_columns" model="ir.actions.act_window">
+        <field name="name">Payslip Batch Report Columns</field>
+        <field name="res_model">hr.payslip.batch.report.column</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

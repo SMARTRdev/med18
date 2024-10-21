@@ -1,0 +1,5 @@
+<odoo>
+    <menuitem id="menu_payslip_batch_report_columns" name="Payslip Batch Report Columns"
+              parent="hr_payroll.menu_hr_salary_configuration"
+              action="action_payslip_batch_report_columns" sequence="40"/>
+</odoo>
