@@ -4,8 +4,8 @@
         <field name="name">Offer Letter (PDF)</field>
         <field name="model">hr.applicant</field>
         <field name="report_type">qweb-pdf</field>
-        <field name="report_name">job_candidate_offers.report_applicant_offer</field>
-        <field name="report_file">job_candidate_offers.report_applicant_offer</field>
+        <field name="report_name">job_candidate_offers.report_applicant_offer_letter</field>
+        <field name="report_file">job_candidate_offers.report_applicant_offer_letter</field>
         <field name="print_report_name"></field>
         <field name="binding_model_id" eval="False"/>
         <field name="binding_type">report</field>
@@ -15,8 +15,8 @@
         <field name="name">Appointment Letter (PDF)</field>
         <field name="model">hr.applicant</field>
         <field name="report_type">qweb-pdf</field>
-        <field name="report_name">job_candidate_offers.report_applicant_offer</field>
-        <field name="report_file">job_candidate_offers.report_applicant_offer</field>
+        <field name="report_name">job_candidate_offers.report_applicant_appointment_letter</field>
+        <field name="report_file">job_candidate_offers.report_applicant_appointment_letter</field>
         <field name="print_report_name"></field>
         <field name="binding_model_id" eval="False"/>
         <field name="binding_type">report</field>
