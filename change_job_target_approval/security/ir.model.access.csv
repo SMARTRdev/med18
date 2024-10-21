@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_smartr-addons/change_job_target_approval_smartr-addons/change_job_target_approval,smartr-addons/change_job_target_approval.smartr-addons/change_job_target_approval,model_smartr-addons/change_job_target_approval_smartr-addons/change_job_target_approval,base.group_user,1,1,1,1

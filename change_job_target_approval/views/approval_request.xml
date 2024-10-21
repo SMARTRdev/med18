@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="unplanned_job_approvals_approval_request_form" model="ir.ui.view">
+        <field name="name">unplanned.job.approvals.approval.request.form</field>
+        <field name="model">approval.request</field>
+        <field name="inherit_id" ref="approvals.approval_request_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header/button[@name='action_confirm']" position="after">
+                <field name="show_modify_planned_job" invisible="1"/>
+                <button name="create_request_to_modify_planned_job"
+                        invisible="not show_modify_planned_job"
+                        type="object"
+                        string="Create Unplanned Job Request"/>
+            </xpath>
+
+            <xpath expr="//notebook/page[@name='description']"  position="before">
+                <page string="Jobs" name="jobs" invisible="approval_type != 'modify_target'">
+                    <field name="job_line_ids" readonly="request_status != 'new'">
+                        <list no_open="True" editable="bottom">
+                            <field name="approval_request_id" column_invisible="1" invisible="1"/>
+                            <field name="available_departments_ids" column_invisible="1" invisible="1"/>
+                            <field name="job_id" string="Job Title"/>
+                            <field name="current_planned_target" />
+                            <field name="new_planned_target"/>
+                            <field name="company_id" column_invisible="1" invisible="1"/>
+                            <field name="department_id" domain="[('id', 'in', available_departments_ids or False)]"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="unplanned_job_approval_job_line_form_view" model="ir.ui.view">
+        <field name="name">unplanned.job.approval.job.line.form.view</field>
+        <field name="model">approval.job.line</field>
+        <field name="inherit_id" ref="recruitment_approval_request.approval_job_line_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='job_id']" position="after">
+                <field name="is_unplanned" string="Is Unplanned Vacancy"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="new_job_approval_job_line_form_view" model="ir.ui.view">
+        <field name="name">new.job.approval.job.line.form.view</field>
+        <field name="model">approval.job.line</field>
+        <field name="inherit_id" ref="recruitment_approval_request.approval_job_line_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='job_id']" position="after">
+                <field name="is_new" string="Is New Job Title?" invisible="job_id"/>
+                <field name="job_title" invisible="not is_new" required="is_new"/>
+            </xpath>
+
+            <xpath expr="//field[@name='job_id']" position="attributes">
+                <attribute name="invisible">is_new</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="new_job_approvals_approval_request_form" model="ir.ui.view">
+        <field name="name">new.job.approvals.approval.request.form</field>
+        <field name="model">approval.request</field>
+        <field name="inherit_id" ref="approvals.approval_request_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header/button[@name='action_confirm']" position="after">
+                <field name="show_create_new_job" invisible="1"/>
+                <button name="create_request_for_new_job"
+                        invisible="not show_create_new_job"
+                        type="object"
+                        string="Create New Job Request"/>
+            </xpath>
+
+            <xpath expr="//notebook/page[@name='job_positions']/field[@name='job_line_ids']/list/field[@name='job_id']"
+                   position="after">
+                <field name="job_title" string="New Job Title"/>
+            </xpath>
+
+            <xpath expr="//notebook/page[@name='description']" position="before">
+                <page string="New Jobs" name="new_jobs" invisible="approval_type != 'new_job_position'">
+                    <field name="job_line_ids" readonly="request_status != 'new'">
+                        <list no_open="True" editable="bottom">
+                            <field name="approval_request_id" column_invisible="1" invisible="1"/>
+                            <field name="job_title"/>
+                            <field name="parent_id"/>
+                            <field name="planned_target"/>
+                            <field name="company_id" column_invisible="1" invisible="1"/>
+                            <field name="job_id" column_invisible="1"/>
+                            <field name="department_id"/>
+                            <field name="manager_id"/>
+
+                            <button name="action_get_job_position" icon="fa-arrow-right " type="object" invisible="not job_id"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Inherit Form View to Modify it -->
+    <record id="add_planned_target_view_hr_job_form" model="ir.ui.view">
+        <field name="name">add.planned.target.view.hr.job.form</field>
+        <field name="model">hr.job</field>
+        <field name="inherit_id" ref="hr.view_hr_job_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='recruitment2']//div[@name='recruitment_target']" position="after">
+                <label for="planned_target"/>
+                <div class="o_row" name="recruitment_planned_target">
+                    <field name="planned_target" class="o_hr_narrow_field"/>
+                    <span>Total Employees</span>
+                </div>
+
+                <label for="no_of_hired_employee"/>
+                <div class="o_row" name="no_of_hired_employee">
+                    <field name="no_of_hired_employee" class="o_hr_narrow_field" readonly="1"/>
+                    <span>Employees</span>
+                </div>
+
+                <label for="original_planned"/>
+                <div class="o_row" name="original_planned">
+                    <field name="original_planned" class="o_hr_narrow_field" readonly="1"/>
+                    <span>Employees</span>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>
