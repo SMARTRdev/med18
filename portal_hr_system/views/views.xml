@@ -1,0 +1,60 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+<!--
+    <record model="ir.ui.view" id="portal_hr_system.list">
+      <field name="name">portal_hr_system list</field>
+      <field name="model">portal_hr_system.portal_hr_system</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+-->
+
+    <!-- actions opening views on models -->
+<!--
+    <record model="ir.actions.act_window" id="portal_hr_system.action_window">
+      <field name="name">portal_hr_system window</field>
+      <field name="res_model">portal_hr_system.portal_hr_system</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+-->
+
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="portal_hr_system.action_server">
+      <field name="name">portal_hr_system server</field>
+      <field name="model_id" ref="model_portal_hr_system_portal_hr_system"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+    <!-- Top menu item -->
+<!--
+    <menuitem name="portal_hr_system" id="portal_hr_system.menu_root"/>
+-->
+    <!-- menu categories -->
+<!--
+    <menuitem name="Menu 1" id="portal_hr_system.menu_1" parent="portal_hr_system.menu_root"/>
+    <menuitem name="Menu 2" id="portal_hr_system.menu_2" parent="portal_hr_system.menu_root"/>
+-->
+    <!-- actions -->
+<!--
+    <menuitem name="List" id="portal_hr_system.menu_1_list" parent="portal_hr_system.menu_1"
+              action="portal_hr_system.action_window"/>
+    <menuitem name="Server to list" id="portal_hr_system" parent="portal_hr_system.menu_2"
+              action="portal_hr_system.action_server"/>
+-->
+  </data>
+</odoo>

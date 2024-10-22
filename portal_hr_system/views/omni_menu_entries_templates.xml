@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="portal_attendance_entry" name="My Portal Attendance Docs Entry">
+        <div t-att-class="'o_portal_index_card ' +  ('' if config_card else 'd-none ') + ('col-12 order-0' if show_count else 'col-md-6 order-2')">
+            <a t-att-href="url" t-att-title="title"
+               groups="base.group_user,base.group_portal"
+               class="text-bg-light d-flex justify-content-start gap-2 gap-md-3 align-items-center py-3 pe-2 px-md-3 h-100 rounded text-decoration-none text-reset #{bg_color if bg_color else 'text-bg-light'}">
+                <h4 class="text-primary card-title">
+                    <t t-esc="title"/>
+                </h4>
+                <t t-if='list_btn'>
+                    <button class="fa fa-list btn-secondary list_view_js ml-auto" title="List View"/>
+                </t>
+                <t t-if='omni_check_out'>
+                    <button class="fa fa-sign-in  btn-secondary o_hr_attendance_sign_in_out_icon ml-1"
+                            title="Check In"/>
+                </t>
+                <t t-else="">
+                    <button class="fa fa-sign-out front_sign_out  o_hr_attendance_sign_in_out_icon btn-secondary ml-1"
+                            title="Check Out"/>
+                </t>
+            </a>
+        </div>
+
+    </template>
+
+    <template id="attendance_menu" name="Show Attendance" inherit_id="portal.portal_my_home">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+
+            <div class="o_portal_category row g-2 mt-3" id="portal_common_category">
+                <t t-call="portal_hr_system.portal_attendance_entry" t-if="omni_employee_id">
+                    <t t-set="title">Attendance</t>
+                    <t t-set="url" t-value="'/omni/my/attendance'"/>
+                    <t t-set="check_in_btn" t-value="check_out"/>
+                    <t t-set="list_btn" t-value="True"/>
+                    <t t-set="config_card" t-value="True"/>
+                </t>
+                <t t-if="request.env.user.employee_id">
+                    <t t-call="portal.portal_docs_entry">
+                        <t t-set="title">Leaves</t>
+                        <t t-set="url" t-value="'/my/leaves'"/>
+                        <t t-set="placeholder_count" t-value="'leave_count'"/>
+                    </t>
+                </t>
+            </div>
+            <!--            <t t-call="portal.portal_docs_entry" t-if="omni_employee_id">-->
+            <!--                &lt;!&ndash;                <t t-set="icon" t-value="'/portal/static/src/img/portal-addresses.svg'"/>&ndash;&gt;-->
+            <!--                <t t-set="title">Addresses</t>-->
+            <!--                &lt;!&ndash;                <t t-set="text">Add, remove or modify your addresses</t>&ndash;&gt;-->
+            <!--                <t t-set="url" t-value="'/omni/my/attendance'"/>-->
+            <!--                <t t-set="config_card" t-value="True"/>-->
+            <!--                <t t-set="check_in_btn" t-value="check_out"/>-->
+            <!--                <t t-set="list_btn" t-value="True"/>-->
+
+            <!--            </t>-->
+        </xpath>
+    </template>
+
+    <template id="portal_my_home_menu_attendance" name="Portal layout : Attendance"
+              inherit_id="portal.portal_breadcrumbs" priority="20">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'attendance'" t-attf-class="breadcrumb-item #{'active' if not attendance else ''}">
+                <t>Attendance</t>
+            </li>
+            <li t-else="" t-attf-class="breadcrumb-item">
+                <t>List View</t>
+            </li>
+        </xpath>
+    </template>
+
+
+</odoo>
+
