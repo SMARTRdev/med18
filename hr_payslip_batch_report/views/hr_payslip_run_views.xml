@@ -18,6 +18,10 @@
                     </div>
                 </button>
             </xpath>
+
+            <xpath expr="//field[@name='country_id']" position="before">
+                <field name="currency_rate"/>
+            </xpath>
         </field>
     </record>
 </odoo>

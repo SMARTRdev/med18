@@ -10,12 +10,14 @@ class TimesheetSelect(models.TransientModel):
     _inherit = "timesheet.select"
 
     sign_print = fields.Boolean(string="Sign & Print")
-    sign_template_id = fields.Many2one("sign.template", string="Sign Template")
+    sign_template_id = fields.Many2one("sign.template", string="Sign Template",
+                                       domain=[("use_as_sign_print_timesheet_report", "=", True)])
 
     def generate_pdf_report(self):
         if self.sign_print and self.sign_template_id:
             employees = self.employee_ids
             ir_attachment_obj = self.env["ir.attachment"]
+            sign_request_obj = self.env["sign.request"]
             sign_send_request_obj = self.env["sign.send.request"]
             timesheet_report = self.env.ref("smrtr_timesheet_report.timesheet_report_id")
 
@@ -33,8 +35,15 @@ class TimesheetSelect(models.TransientModel):
                 report = timesheet_report.sudo()._render_qweb_pdf(timesheet_report.id,
                                                                   res_ids=self.ids, data=data_dict)
 
+                attachment_name = f"{timesheet_report.name} - {employee.display_name} - {self.start_date.strftime('%Y-%b')}"
+                sign_request_count = sign_request_obj.search_count([("timesheet_report_employee_id", "=", employee.id),
+                                                                    ("timesheet_report_date", ">=", self.start_date),
+                                                                    ("timesheet_report_date", "<=", self.end_date)])
+                if sign_request_count > 0:
+                    attachment_name += f"({sign_request_count})"
+
                 attachment = ir_attachment_obj.create({
-                    "name": timesheet_report.name + ".pdf",
+                    "name": attachment_name + ".pdf",
                     "type": "binary",
                     "datas": base64.b64encode(report[0]),
                     "res_model": sign_template._name,
@@ -60,6 +69,7 @@ class TimesheetSelect(models.TransientModel):
                     signer_ids.append((0, 0, {
                         "role_id": role.id,
                         "partner_id": partner_id or self.env.user.partner_id.id,
+                        "mail_sent_order": default_signing_order + 1
                     }))
 
                 sign_send_request = (
@@ -70,15 +80,22 @@ class TimesheetSelect(models.TransientModel):
                             "filename": sign_template.display_name,
                             "subject": _("Signature Request - %(file_name)s",
                                          file_name=sign_template.attachment_id.name),
+                            "set_sign_order": True,
                             "signers_count": signers_count,
                             "signer_ids": signer_ids
                         }))
                 res = sign_send_request.with_context(sign_all=True).sign_directly()
-                sign_request_ids.append(res["context"]["id"])
+                sign_request_id = res["context"]["id"]
+                sign_request = sign_request_obj.browse(sign_request_id)
+                sign_request.write({
+                    "timesheet_report_employee_id": employee.id,
+                    "timesheet_report_date": self.date
+                })
+                sign_request_ids.append(sign_request_id)
 
             if sign_request_ids:
                 if len(sign_request_ids) == 1:
-                    return self.env["sign.request"].browse(sign_request_ids[0]).go_to_document()
+                    return sign_request_obj.browse(sign_request_ids[0]).go_to_document()
 
                 return {
                     "type": "ir.actions.act_window",

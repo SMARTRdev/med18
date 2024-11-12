@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields
+from odoo import models, fields, api
 
 
 class HRPayslip(models.Model):
@@ -9,6 +9,12 @@ class HRPayslip(models.Model):
     comments = fields.Char(string="Comments")
     payment_by_hq = fields.Boolean(related="contract_id.payment_by_hq", string="Payment by HQ", readonly=True,
                                    store=True)
+    currency_rate = fields.Float(compute="_compute_currency_rate", string="Currency Rate", store=True, readonly=False)
+
+    @api.depends("payslip_run_id")
+    def _compute_currency_rate(self):
+        for payslip in self:
+            payslip.currency_rate = payslip.payslip_run_id.currency_rate
 
     def get_allocate_timesheet_project_codes(self):
         project_codes = ""
@@ -18,8 +24,8 @@ class HRPayslip(models.Model):
             for account_id, distribution in allocate_timesheet_line.analytic_distribution.items():
                 analytic_account = account_analytic_account_obj.browse(int(account_id))
                 if project_codes:
-                    project_codes += ","
+                    project_codes += " - "
 
-                project_codes += f'{analytic_account.display_name}:{distribution}'
-                
+                project_codes += f'{analytic_account.display_name}:{distribution}%'
+
         return project_codes

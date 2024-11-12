@@ -21,6 +21,7 @@
     'depends': ['smrtr_timesheet_report', 'assign_contact_sign'],
     # always loaded
     'data': [
-        'wizard/time_sheet_select_wizard_views.xml'
+        'wizard/time_sheet_select_wizard_views.xml',
+        'views/sign_template_views.xml'
     ]
 }

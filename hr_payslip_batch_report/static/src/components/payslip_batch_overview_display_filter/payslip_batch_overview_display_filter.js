@@ -18,7 +18,7 @@ export class PayslipBatchOverviewDisplayFilter extends Component {
     get displayableOptions() {
         return Object.keys(this.props.displayOptions).map(optionKey => ({
             id: optionKey,
-            label: this.displayOptions[optionKey],
+            label: this.props.displayOptions[optionKey],
             onSelected: () => this.props.changeDisplay(optionKey),
             class: { o_menu_item: true, selected: this.props.showOptions[optionKey] },
             closingMode: "none",

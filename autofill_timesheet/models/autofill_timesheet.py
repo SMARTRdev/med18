@@ -2,6 +2,7 @@
 
 import calendar
 import datetime
+import math
 
 from dateutil.relativedelta import relativedelta
 from odoo import models, api, fields, _
@@ -108,13 +109,20 @@ class AutofillTimesheet(models.Model):
         date = self.start_date_month
         end_date_month = date.replace(day=calendar.monthrange(date.year, date.month)[1])
 
-        contract = employee.contract_id
-        resource_calendar = contract.resource_calendar_id
+        resource_calendar = employee.contract_id.resource_calendar_id
         if resource_calendar:
-            if date < contract.date_start:
-                date = contract.date_start
+            contracts = self.env["hr.contract"].search(
+                [("employee_id", "=", employee.id), ("state", "in", ["open", "close"]), "|",
+                 ("date_end", "=", False), ("date_end", ">=", date)])
+
+            if len(contracts) == 1 and date < contracts.date_start:
+                date = contracts.date_start
 
             while date <= end_date_month:
+                if not contracts.filtered(lambda c: c.date_start <= date and (not c.date_end or c.date_end >= date)):
+                    date += datetime.timedelta(1)
+                    continue
+
                 attendance_lines = resource_calendar.attendance_ids.filtered(
                     lambda a: not a.week_type or int(a.week_type) == self.env[
                         "resource.calendar.attendance"].get_week_type(date))
@@ -245,10 +253,11 @@ class AutofillTimesheetLine(models.Model):
     actual_working_hours = fields.Float(string="Actual Working Hours", readonly=True)
     working_hours_percentage = fields.Float(string="Working Hours (%)")
     working_hours = fields.Float(string="Working Hours")
+    daily_distribution = fields.Boolean(string="Daily Distribution")
 
     @api.onchange("working_hours_percentage")
     def onchange_working_hours_percentage(self):
-        self.working_hours = self.working_hours * self.working_hours_percentage / 100
+        self.working_hours = self.actual_working_hours * self.working_hours_percentage / 100
 
     def _prepare_timesheet(self, project, task, date, remaining_hours):
         return {
@@ -262,14 +271,23 @@ class AutofillTimesheetLine(models.Model):
         }
 
     def action_autofill(self, start_date, end_date, project, task):
-        contract = self.employee_id.contract_id
-        if not contract:
+        contracts = self.env["hr.contract"].search(
+            [("employee_id", "=", self.employee_id.id), ("state", "in", ["open", "close"]), "|",
+             ("date_end", "=", False), ("date_end", ">=", start_date)])
+
+        if not contracts:
             raise ValidationError(_("Employee %s not have contract" % self.employee_id.display_name))
 
-        if start_date < contract.date_start:
-            start_date = contract.date_start
+        if len(contracts) == 1 and start_date < contracts.date_start:
+            start_date = contracts.date_start
 
-        contract._recompute_work_entries(start_date, end_date)
+        for contract in contracts:
+            if contract.date_end and contract.date_end < end_date:
+                contract._recompute_work_entries(start_date, contract.date_end)
+            elif start_date < contract.date_start:
+                contract._recompute_work_entries(contract.date_start, end_date)
+            else:
+                contract._recompute_work_entries(start_date, end_date)
 
         account_analytic_line_obj = self.env["account.analytic.line"]
 
@@ -281,12 +299,36 @@ class AutofillTimesheetLine(models.Model):
             raise ValidationError(
                 _("Working hours must be less than or equal to actual working hours for employee %s") % self.employee_id.display_name)
 
-        resource_calendar = contract.resource_calendar_id
+        resource_calendar = self.employee_id.contract_id.resource_calendar_id
         if not resource_calendar:
             raise ValidationError(_("No there working hours Schedule for employee %s" % self.employee_id.display_name))
 
+        hours_day = 0
+        if self.daily_distribution:
+            number_working_days = 0
+            date = start_date
+            while date <= end_date:
+                attendance_lines = resource_calendar.attendance_ids.filtered(
+                    lambda a: not a.week_type or int(a.week_type) == self.env[
+                        "resource.calendar.attendance"].get_week_type(date))
+                if attendance_lines:
+                    attendance_lines = attendance_lines.filtered(
+                        lambda a: int(a.dayofweek) == date.weekday() and a.day_period != "lunch")
+
+                if attendance_lines:
+                    number_working_days += 1
+
+                date += datetime.timedelta(1)
+
+            hours_day = math.ceil(remaining_working_hours / number_working_days)
+
         hr_work_entry_obj = self.env["hr.work.entry"]
         while start_date <= end_date and remaining_working_hours != 0:
+            if not contracts.filtered(
+                    lambda c: c.date_start <= start_date and (not c.date_end or c.date_end >= start_date)):
+                start_date += datetime.timedelta(1)
+                continue
+
             attendance_lines = resource_calendar.attendance_ids.filtered(
                 lambda a: not a.week_type or int(a.week_type) == self.env[
                     "resource.calendar.attendance"].get_week_type(start_date))
@@ -296,6 +338,9 @@ class AutofillTimesheetLine(models.Model):
 
             if attendance_lines:
                 working_hours = sum(attendance_line.duration_hours for attendance_line in attendance_lines)
+
+                if self.daily_distribution:
+                    working_hours = hours_day
 
                 total_hours_timesheet = sum(account_analytic_line.unit_amount for account_analytic_line in
                                             account_analytic_line_obj.search(

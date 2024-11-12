@@ -23,23 +23,23 @@
                t-on-click.prevent="() => this.goToAction(payslip.contract_id, 'hr.contract')"
                t-esc="payslip.contract_date_end"/>
         </td>
-        <td>
-            <span t-esc="work_days"/>
+        <td t-if="showReportColumn('work_days_payslip')">
+            <span t-esc="payslip.work_days"/>
         </td>
 
         <t t-foreach="props.reportColumns" t-as="reportColumn" t-key="reportColumn.id">
             <td t-if="showReportColumn(reportColumn.id)">
                 <t t-if="reportColumn.net_salary">
                     <a href="#" t-on-click.prevent="() => this.goToAction(payslip.id, 'hr.payslip')"
-                       t-esc="formatMonetary(payslip[reportColumn.id])"/>
+                       t-esc="formatMonetary(payslip[reportColumn.id],reportColumn.currency_id)"/>
                 </t>
                 <t t-else="">
-                    <span t-esc="formatMonetary(payslip[reportColumn.id])"/>
+                    <span t-esc="formatMonetary(payslip[reportColumn.id],reportColumn.currency_id)"/>
                 </t>
             </td>
         </t>
 
-        <td class="text-center">
+        <td class="text-center" t-if="showReportColumn('payment_by_hq')">
             <span t-if="payslip.payment_by_hq" class="fa fa-check"/>
             <span t-else="" class="fa fa-times"/>
         </td>

@@ -30,7 +30,8 @@
                                 </h6>
                             </div>
 
-                            <table class="table table-borderless">
+                            <table class="table table-bordered">
+                                <t t-set="total_cols" t-value="6"/>
                                 <thead>
                                     <tr>
                                         <th>#</th>
@@ -38,7 +39,12 @@
                                         <th>Title</th>
                                         <th>Contract start date</th>
                                         <th>Contract end date</th>
-                                        <th>Work Days</th>
+                                        <th t-if="data['option_columns']['work_days_payslip']">
+                                            Work Days
+                                        </th>
+                                        <t t-else="">
+                                            <t t-set="total_cols" t-value="total_cols - 1"/>
+                                        </t>
                                         <t t-foreach="data['report_columns']" t-as="report_column">
                                             <t t-set="show_report_column" t-value="1"/>
                                             <t t-if="report_column['id'] in data['option_columns']">
@@ -48,7 +54,9 @@
 
                                             <th t-if="show_report_column" t-esc="report_column['label']"/>
                                         </t>
-                                        <th class="text-center">Payment by HQ</th>
+                                        <th t-if="data['option_columns']['payment_by_hq']" class="text-center">
+                                            Payment by HQ
+                                        </th>
                                         <th>Project Codes</th>
                                         <th>Comments</th>
                                     </tr>
@@ -72,7 +80,7 @@
                                         <td>
                                             <span t-esc="payslip['contract_date_end']"/>
                                         </td>
-                                        <td>
+                                        <td t-if="data['option_columns']['work_days_payslip']">
                                             <span t-esc="payslip['work_days']"/>
                                         </td>
 
@@ -85,11 +93,11 @@
 
                                             <td t-if="show_report_column">
                                                 <span t-esc="payslip[report_column['id']]"
-                                                      t-options='{"widget": "monetary", "display_currency": currency}'/>
+                                                      t-options='{"widget": "monetary", "display_currency": report_column["currency"] or currency}'/>
                                             </td>
                                         </t>
 
-                                        <td class="text-center">
+                                        <td class="text-center" t-if="data['option_columns']['payment_by_hq']">
                                             <span t-if="payslip['payment_by_hq']" class="fa fa-check"/>
                                             <span t-else="" class="fa fa-times"/>
                                         </td>
@@ -103,7 +111,7 @@
 
                                     <!-- total  -->
                                     <tr>
-                                        <td colspan="6" class="text-center">
+                                        <td t-att-colspan="total_cols" class="text-center">
                                             <strong>Total</strong>
                                         </td>
 
@@ -116,16 +124,36 @@
 
                                             <td t-if="show_report_column">
                                                 <strong t-esc="data['total_report_columns'][report_column['id']]"
-                                                        t-options='{"widget": "monetary", "display_currency": currency}'/>
+                                                        t-options='{"widget": "monetary", "display_currency": report_column["currency"] or currency}'/>
                                             </td>
                                         </t>
 
-                                        <td/>
+                                        <td t-if="data['option_columns']['payment_by_hq']"/>
                                         <td/>
                                         <td/>
                                     </tr>
                                 </tbody>
                             </table>
+
+                            <table class="table table-bordered" t-if="data['approval_stages']">
+                                <tbody>
+                                    <tr t-foreach="data['approval_stages']" t-as="approval_stage">
+                                        <td>
+                                            <span t-esc="approval_stage['label']"/>
+                                        </td>
+
+                                        <td>
+                                            <span t-esc="approval_stage['approvers']"/>
+                                        </td>
+
+
+                                        <td>
+                                            <span t-esc="approval_stage['date']"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
                         </div>
                         <div t-else="" class="d-flex align-items-center justify-content-center h-50">
                             <h4 class="text-muted">No payslips available.</h4>

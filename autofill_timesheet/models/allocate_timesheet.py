@@ -126,7 +126,12 @@ class AllocateTimesheet(models.Model):
                 if account_analytic_line.holiday_id:
                     total_time_off_hours += account_analytic_line.unit_amount
 
-            work_hours = employee.contract_id.get_work_hours(start_date_month, end_date_month)
+
+            contracts = self.env["hr.contract"].search(
+                [("employee_id", "=", employee.id), ("state", "in", ["open", "close"]), "|",
+                 ("date_end", "=", False), ("date_end", ">=", start_date_month)])
+
+            work_hours = contracts.get_work_hours(start_date_month, end_date_month)
             total_actual_working_hours = 0
             for work_entry_type_id, hours in sorted(work_hours.items(), key=lambda x: x[1]):
                 total_actual_working_hours += hours

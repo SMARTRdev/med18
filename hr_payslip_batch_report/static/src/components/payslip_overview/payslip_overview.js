@@ -16,7 +16,7 @@ export class PayslipOverview extends Component {
     setup() {
         this.actionService = useService("action");
         this.ormService = useService("orm");
-        this.formatMonetary = (val) => formatMonetary(val, { currencyId: this.payslip.currency_id });
+        this.formatMonetary = (val,currency_id) => formatMonetary(val, { currencyId: currency_id || this.payslip.currency_id });
     }
 
     get payslip() {

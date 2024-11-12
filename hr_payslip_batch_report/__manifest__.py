@@ -18,7 +18,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['autofill_timesheet', 'sign_print_template'],
+    'depends': ['autofill_timesheet', 'sign_print_template', 'approval_route_payslip_batch'],
     # always loaded
     'data': [
         'security/ir.model.access.csv',

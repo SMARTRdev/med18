@@ -23,7 +23,7 @@ export class PayslipBatchOverviewTable extends Component {
 
     setup() {
         this.actionService = useService("action");
-        this.formatMonetary = (val) => formatMonetary(val, { currencyId: this.props.currencyID });
+        this.formatMonetary = (val,currency_id) => formatMonetary(val, { currencyId: currency_id || this.props.currencyID });
     }
 
     get batchNumber() {

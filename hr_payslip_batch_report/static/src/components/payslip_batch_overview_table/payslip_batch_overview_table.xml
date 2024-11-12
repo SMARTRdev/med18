@@ -24,13 +24,14 @@
                             <th style="position: sticky;top: 0;background-color: #fff;z-index: 100;">Title</th>
                             <th style="position: sticky;top: 0;background-color: #fff;z-index: 100;">Contract start date</th>
                             <th style="position: sticky;top: 0;background-color: #fff;z-index: 100;">Contract end date</th>
-                            <th style="position: sticky;top: 0;background-color: #fff;z-index: 100;">Work Days</th>
+                            <th t-if="showReportColumn('work_days_payslip')"
+                                style="position: sticky;top: 0;background-color: #fff;z-index: 100;">Work Days</th>
                             <t t-foreach="props.reportColumns" t-as="reportColumn" t-key="reportColumn.id">
                                 <th t-if="showReportColumn(reportColumn.id)"
                                     style="position: sticky;top: 0;background-color: #fff;z-index: 100;"
                                     t-esc="reportColumn.label"/>
                             </t>
-                            <th class="text-center"
+                            <th t-if="showReportColumn('payment_by_hq')" class="text-center"
                                 style="position: sticky;top: 0;background-color: #fff;z-index: 100;">Payment by HQ</th>
                             <th style="position: sticky;top: 0;background-color: #fff;z-index: 100;">Project Codes</th>
                             <th style="position: sticky;top: 0;background-color: #fff;z-index: 100;">Comments</th>
@@ -51,7 +52,7 @@
                             </td>
                             <t t-foreach="props.reportColumns" t-as="reportColumn" t-key="reportColumn.id">
                                 <td t-if="showReportColumn(reportColumn.id)">
-                                    <strong t-esc="formatMonetary(props.totalReportColumns[reportColumn.id])"/>
+                                    <strong t-esc="formatMonetary(props.totalReportColumns[reportColumn.id],reportColumn.currency_id)"/>
                                 </td>
                             </t>
                             <td/>

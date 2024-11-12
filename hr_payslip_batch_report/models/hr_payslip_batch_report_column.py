@@ -14,3 +14,4 @@ class HrPayslipBatchReportColumn(models.Model):
     sequence = fields.Integer(string="Sequence", required=True, default=10)
     optional_display = fields.Boolean(string="Optional Display")
     net_salary = fields.Boolean(string="Net Salary")
+    currency_id = fields.Many2one("res.currency", string="Currency")
