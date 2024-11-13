@@ -44,6 +44,7 @@ Long description of module's purpose
         'views/approval_job_line.xml',
         'views/approval_category.xml',
         'views/res_users_views.xml',
+        'views/res_company_views.xml',
         'views/menus.xml'
     ]
 }
