@@ -22,7 +22,7 @@ class HrLeave(models.Model):
         hr_payslip_obj = self.env["hr.payslip"].sudo()
         for leave in self:
             if hr_payslip_obj.search_count([
-                ("employee_id", "in", leave.employee_ids.ids),
+                ("employee_id", "=", leave.employee_id.id),
                 ("date_from", "<=", leave.date_to),
                 ("date_to", ">=", leave.date_from),
                 ("state", "in", ["done", "paid"])
