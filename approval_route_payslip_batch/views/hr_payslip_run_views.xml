@@ -11,7 +11,7 @@
                         invisible="not can_approve or state != 'under_approval'" class="oe_highlight"/>
                 <button name="action_approve_with_comment" type="object" string="Approve with Comment"
                         invisible="not can_approve or state != 'under_approval'" class="oe_highlight"/>
-                <button name="action_reject" type="object" string="Reject"
+                <button name="action_reject" type="object" string="Reject with Reason"
                         invisible="not can_approve or state != 'under_approval'" class="oe_highlight"/>
             </xpath>
 
