@@ -9,6 +9,10 @@
                         invisible="state != 'verify'" class="oe_highlight"/>
                 <button name="action_approve" type="object" string="Approve"
                         invisible="not can_approve or state != 'under_approval'" class="oe_highlight"/>
+                <button name="action_approve_with_comment" type="object" string="Approve with Comment"
+                        invisible="not can_approve or state != 'under_approval'" class="oe_highlight"/>
+                <button name="action_reject" type="object" string="Reject"
+                        invisible="not can_approve or state != 'under_approval'" class="oe_highlight"/>
             </xpath>
 
             <xpath expr="//button[@name='action_validate']" position="attributes">
@@ -33,6 +37,16 @@
                           invisible="state in ['draft','verify'] or not approval_route_id">
                         <field name="approval_route_stage_ids"/>
                         <field name="is_current_approver" invisible="True"/>
+                    </page>
+                    <page name="action_reasons" string="Action Reasons">
+                        <field name="action_reason_line_ids">
+                            <list string="Payslip Batch Action Reason Line">
+                                <field name="create_uid" string="User"/>
+                                <field name="create_date" string="Date" optional="show"/>
+                                <field name="type"/>
+                                <field name="reason"/>
+                            </list>
+                        </field>
                     </page>
                 </notebook>
             </xpath>

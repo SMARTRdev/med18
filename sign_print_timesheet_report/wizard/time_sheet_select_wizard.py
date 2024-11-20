@@ -23,8 +23,8 @@ class TimesheetSelect(models.TransientModel):
 
             sign_request_ids = []
             for employee in employees:
-                if not employee.timesheet_manager_id:
-                    raise ValidationError(_("Employee %s has no Timesheet Manager assigned." % employee.display_name))
+                if not employee.parent_id:
+                    raise ValidationError(_("Employee %s has no manager assigned." % employee.display_name))
 
                 self.employee_ids = employee
 
@@ -62,7 +62,7 @@ class TimesheetSelect(models.TransientModel):
                     if role.contact_type == "employee":
                         partner_id = employee.work_contact_id.id
                     elif role.contact_type == "employee_manager":
-                        partner_id = employee.timesheet_manager_id.partner_id.id
+                        partner_id = employee.parent_id.work_contact_id.id
                     elif role.assign_contact_id:
                         partner_id = role.assign_contact_id.id
 

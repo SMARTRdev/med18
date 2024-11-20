@@ -22,6 +22,8 @@
     'depends': ['hr_payroll_account', 'xf_approval_route_base'],
     # always loaded
     'data': [
+        'security/ir.model.access.csv',
+        'wizard/hr_payslip_run_action_reason_views.xml',
         'views/res_config_settings_views.xml',
         'views/hr_payslip_run_views.xml'
     ],

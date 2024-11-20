@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+access_hr_payslip_run_action_reason_line_group_user,hr.payslip.run.action.reason.line.group.user,model_hr_payslip_run_action_reason_line,base.group_user,1,1,1,1
+
+access_hr_payslip_run_action_reason_wizard_group_user,hr.payslip.run.action.reason.wizard.group.user,model_hr_payslip_run_action_reason,base.group_user,1,1,1,1
