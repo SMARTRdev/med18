@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_smrtr_timesheet_report_res_config_settings_form" model="ir.ui.view">
+        <field name="name">view.smrtr.timesheet.report.res.config.settings.form</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="hr_timesheet.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//block[@name='autofill_timesheet_setting_container']" position="inside">
+                <setting id="percentage_timesheet_report">
+                    <field name="percentage_timesheet_report"/>
+                </setting>
+            </xpath>
+        </field>
+    </record>
+</odoo>
