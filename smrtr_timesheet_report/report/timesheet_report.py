@@ -30,11 +30,26 @@ class timesheet_report(models.AbstractModel):
                 grouped_records[employee_id] = [rec]
 
         for employee_id, employee_records in grouped_records.items():
+            allocate_timesheet_line = self.env["allocate.timesheet.line"].sudo().search(
+                [("allocate_timesheet_id.date", ">=", docs.start_date),
+                 ("allocate_timesheet_id.date", "<=", docs.end_date),
+                 ("employee_id", "=", employee_id.id)], limit=1)
+
             total = 0
             for rec in employee_records:
                 is_leave = False
                 if rec.holiday_id:
                     is_leave = True
+
+                percentage_allocate = (rec.hours_percentage_month_project * 100)
+                if rec.company_id.percentage_timesheet_report == "allocation":
+                    percentage_allocate = 0
+                    if rec.project_id.account_id and allocate_timesheet_line:
+                        project_account_id = rec.project_id.account_id.id
+                        for account_id, distribution in allocate_timesheet_line.analytic_distribution.items():
+                            if int(account_id) == project_account_id:
+                                percentage_allocate = distribution
+                                break
 
                 vals = {
                     'project': rec.project_id.name,
@@ -44,6 +59,7 @@ class timesheet_report(models.AbstractModel):
                     'description': rec.name,
                     'task': rec.task_id.name,
                     'total': total,
+                    'percentage_allocate': percentage_allocate,
                     'is_leave': is_leave
                 }
                 records.append(vals)

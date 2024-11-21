@@ -4,4 +4,12 @@
 
     <menuitem id="menu_hr_department_function" name="Department Functions" parent="hr.menu_hr_root"
               action="action_hr_department_function" sequence="20" groups="hr.group_hr_user"/>
+
+    <record id="hr_work_entry_contract_enterprise.menu_hr_payroll_root" model="ir.ui.menu">
+        <field name="groups_id" eval="[(4, ref('smartr_customize_hr_medglobal.group_allow_payslips_batches'))]"/>
+    </record>
+
+    <record id="hr_payroll.menu_hr_payroll_payslips" model="ir.ui.menu">
+        <field name="groups_id" eval="[(4, ref('smartr_customize_hr_medglobal.group_allow_payslips_batches'))]"/>
+    </record>
 </odoo>

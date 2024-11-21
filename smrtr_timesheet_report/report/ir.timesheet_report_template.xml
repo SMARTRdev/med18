@@ -93,6 +93,10 @@
                                     <span t-esc="date.strftime('%a')"/>
                                 </td>
 
+                                <td rowspan="2" class="text-center"
+                                    style="vertical-align: middle;background-color:#ccc;font-size:13px;width:60px">
+                                    <span>%</span>
+                                </td>
 
                                 <td rowspan="2" class="text-center"
                                     style="vertical-align: middle;background-color:#ccc;font-size:13px;width:60px">
@@ -114,18 +118,23 @@
                                         <span style="font-size:14px" t-esc="project"/>
                                     </td>
                                     <t t-set="total_time" t-value="0"/>
+                                    <t t-set="percentage_allocate" t-value="0"/>
                                     <t t-foreach="dates" t-as="date">
                                         <td style="vertical-align: middle;text-align-center">
                                             <t t-set="daily_time" t-value="0"/>
                                             <t t-foreach="timesheets" t-as="t">
                                                 <t t-if="not t['is_leave'] and t['employee'] == employee and t['date'] == date and t['project'] == project">
                                                     <t t-set="daily_time" t-value="daily_time + t['duration']"/>
+                                                    <t t-set="percentage_allocate" t-value="t['percentage_allocate']"/>
                                                 </t>
                                             </t>
                                             <span t-esc="daily_time"/>
                                             <t t-set="total_time" t-value="total_time + daily_time"/>
                                         </td>
                                     </t>
+                                    <td style="background-color:#ccc;vertical-align: middle;text-align-center">
+                                        <span t-esc="round(percentage_allocate,2)"/>
+                                    </td>
                                     <td style="background-color:#ccc;vertical-align: middle;text-align-center">
                                         <span t-esc="round(total_time,2)"/>
                                     </td>
@@ -150,6 +159,7 @@
                                         </strong>
                                     </td>
                                 </t>
+                                <td/>
                                 <td style="background-color:#ccc;vertical-align: middle;text-align-center">
                                     <t t-set="grand_total" t-value="0"/>
                                     <t t-foreach="timesheets" t-as="t">
@@ -172,18 +182,25 @@
                                         <span style="font-size:14px" t-esc="project"/>
                                     </td>
                                     <t t-set="total_time" t-value="0"/>
+                                    <t t-set="percentage_allocate" t-value="0"/>
                                     <t t-foreach="dates" t-as="date">
                                         <td style="vertical-align: middle;text-align-center">
                                             <t t-set="daily_time" t-value="0"/>
                                             <t t-foreach="timesheets" t-as="t">
                                                 <t t-if="t['is_leave'] and t['employee'] == employee and t['date'] == date and t['project'] == project">
                                                     <t t-set="daily_time" t-value="daily_time + t['duration']"/>
+                                                    <t t-set="percentage_allocate" t-value="t['percentage_allocate']"/>
                                                 </t>
                                             </t>
                                             <span t-esc="daily_time"/>
                                             <t t-set="total_time" t-value="total_time + daily_time"/>
                                         </td>
                                     </t>
+
+                                    <td style="background-color:#ccc;vertical-align: middle;text-align-center">
+                                        <span t-esc="round(percentage_allocate,2)"/>
+                                    </td>
+
                                     <td style="background-color:#ccc;vertical-align: middle;text-align-center">
                                         <span t-esc="round(total_time,2)"/>
                                     </td>
@@ -208,6 +225,8 @@
                                         </strong>
                                     </td>
                                 </t>
+
+                                <td/>
                                 <td style="background-color:#ccc;vertical-align: middle;text-align-center">
                                     <t t-set="grand_total" t-value="0"/>
                                     <t t-foreach="timesheets" t-as="t">
@@ -239,6 +258,7 @@
                                         </strong>
                                     </td>
                                 </t>
+                                <td/>
                                 <td style="background-color:#ccc;vertical-align: middle;text-align-center">
                                     <t t-set="grand_total" t-value="0"/>
                                     <t t-foreach="timesheets" t-as="t">

@@ -21,7 +21,7 @@ Long description of module's purpose
     'depends': ['ent_hr_reward_warning', 'hr_recruitment_survey',
                 'new_job_approval_request', 'add_job_description_attachment', 'hr_payroll_holidays',
                 'hr_payroll_account', 'shortlisting_approval_request', 'set_approvers_for_approval_request',
-                'job_candidate_offers'],
+                'job_candidate_offers', 'hr_payslip_batch_report'],
 
     # always loaded
     'data': [

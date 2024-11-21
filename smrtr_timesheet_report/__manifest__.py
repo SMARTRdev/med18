@@ -12,11 +12,12 @@
     ''',
     'author': 'SMARTR Teknoloji',
     'website': 'https://www.smartr.dev',
-    'depends': ['project_timesheet_holidays'],
+    'depends': ['autofill_timesheet'],
     'data': [
         'security/ir.model.access.csv',
         'wizard/time_sheet_select_wizard_view.xml',
         'wizard/save_ex_report_wizard_view.xml',
+        'views/res_config_settings_views.xml',
         'views/timesheet.xml',
         'report/ir.timesheet_report_template.xml',
         'report/ir.timesheet_reoprt.xml',

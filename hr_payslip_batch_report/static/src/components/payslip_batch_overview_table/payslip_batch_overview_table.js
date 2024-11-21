@@ -4,6 +4,7 @@ import { PayslipOverview } from "../payslip_overview/payslip_overview";
 import { useService } from "@web/core/utils/hooks";
 import { Component } from "@odoo/owl";
 import { formatMonetary } from "@web/views/fields/formatters";
+import { _t } from "@web/core/l10n/translation";
 
 export class PayslipBatchOverviewTable extends Component {
     static template = "hr_payslip_batch_report.PayslipBatchOverviewTable";
@@ -22,6 +23,7 @@ export class PayslipBatchOverviewTable extends Component {
     };
 
     setup() {
+        this.orm = useService("orm");
         this.actionService = useService("action");
         this.formatMonetary = (val,currency_id) => formatMonetary(val, { currencyId: currency_id || this.props.currencyID });
     }
@@ -55,6 +57,23 @@ export class PayslipBatchOverviewTable extends Component {
             context: {
                 active_id: this.props.batchID,
             },
+        });
+    }
+
+    async goToTimesheets() {
+        const sign_request_ids = await this.orm.call(
+            "hr.payslip.run",
+            "action_get_sign_request_ids",
+            [this.props.batchID]
+        );
+        return this.actionService.doAction({
+            name: _t("Signature Requests"),
+            type: "ir.actions.act_window",
+            res_model: "sign.request",
+            domain: [["id","in",sign_request_ids]],
+            views: [[false, "kanban"],[false, "list"]],
+            view_mode: "kanban,list",
+            target: "current"
         });
     }
 }
