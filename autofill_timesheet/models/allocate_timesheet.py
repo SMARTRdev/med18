@@ -386,7 +386,7 @@ class AllocateTimesheetLine(models.Model):
                     project_id = random.choice(available_project_ids)
 
                 project = project_obj.browse(project_id)
-                remaining_hours = analytic_distribution_hours[str(project.analytic_account_id.id)]
+                remaining_hours = analytic_distribution_hours[str(project.account_id.id)]
 
                 task = project_task_obj.search(
                     [("project_id", "=", project_id), ("autofill_timesheet_month", "=", start_date_month)])
@@ -413,12 +413,12 @@ class AllocateTimesheetLine(models.Model):
                             old_remaining_hours = remaining_hours
                             remaining_hours = math.floor(old_remaining_hours)
 
-                        analytic_distribution_hours[str(project.analytic_account_id.id)] = remaining_hours
+                        analytic_distribution_hours[str(project.account_id.id)] = remaining_hours
 
                         if old_remaining_hours > remaining_hours:
                             for key, analytic_distribution_hour in analytic_distribution_hours.items():
                                 if key != str(
-                                        project.analytic_account_id.id) and analytic_distribution_hour > decimal_number:
+                                        project.account_id.id) and analytic_distribution_hour > decimal_number:
                                     analytic_distribution_hours[key] = round(
                                         analytic_distribution_hours[key] + decimal_number, 2)
 
@@ -427,7 +427,7 @@ class AllocateTimesheetLine(models.Model):
                         len(first_day_project_ids) <= 1 or len(available_project_ids) == 1):
                     remaining_unit_amount = 0
                     analytic_distribution_hours[
-                        str(project.analytic_account_id.id)] = round(
+                        str(project.account_id.id)] = round(
                         remaining_hours - account_analytic_line.unit_amount, 2)
 
                     if project_id in first_day_project_ids:
@@ -447,10 +447,10 @@ class AllocateTimesheetLine(models.Model):
 
                     if remaining_hours > remaining_unit_amount:
                         analytic_distribution_hours[
-                            str(project.analytic_account_id.id)] = round(remaining_hours - new_unit_amount, 2)
+                            str(project.account_id.id)] = round(remaining_hours - new_unit_amount, 2)
                     else:
-                        del analytic_distribution_hours[str(project.analytic_account_id.id)]
-                        for delete_project in project.analytic_account_id.project_ids:
+                        del analytic_distribution_hours[str(project.account_id.id)]
+                        for delete_project in project.account_id.project_ids:
                             project_ids.remove(delete_project.id)
 
                             if delete_project.id in available_project_ids:
