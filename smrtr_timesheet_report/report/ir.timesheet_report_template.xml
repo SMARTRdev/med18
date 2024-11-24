@@ -20,60 +20,61 @@
                         <br/>
                         <div style="width:100%">
                             <div style="width: 100%">
-                                <table class="table table-bordered"
+                                <table class="table"
                                        style="border-color: black; table-layout: fixed; width: 100%;">
                                     <tr>
-                                        <td style="background-color: #c6d9f0; width: 12%;">
+                                        <td style="border:solid black 1px;background-color: #c6d9f0; width: 12%;">
                                             <strong>Staff Name:</strong>
                                         </td>
-                                        <td style="width: 25%;">
+                                        <td style="border:solid black 1px;width: 25%;">
                                             <span t-field="employee.name"/>
                                         </td>
-                                        <td style="background-color: #c6d9f0; width: 4%;">
+                                        <td style="border:solid black 1px;background-color: #c6d9f0; width: 4%;">
                                             <strong>ID:</strong>
                                         </td>
-                                        <td style="width: 8%;">
+                                        <td style="border:solid black 1px;width: 8%;">
                                             <span t-field="employee.barcode"/>
                                         </td>
-                                        <td style="background-color: #c6d9f0; width: 10%;">
+                                        <td style="border:solid black 1px;background-color: #c6d9f0; width: 10%;">
                                             <strong>Country Office:</strong>
                                         </td>
-                                        <td style="width: 12%;">
+                                        <td style="border:solid black 1px;width: 12%;">
                                             <span t-field="employee.company_id"/>
                                         </td>
                                         <td rowspan="2" class="text-center"
-                                            style="background-color: #c6d9f0; vertical-align: middle; width: 6%;">
+                                            style="border:solid black 1px;background-color: #c6d9f0; vertical-align: middle; width: 6%;">
                                             <strong>Month</strong>
                                         </td>
-                                        <td rowspan="2" class="text-center" style="vertical-align: middle; width: 8%;">
+                                        <td rowspan="2" class="text-center"
+                                            style="border:solid black 1px;vertical-align: middle; width: 8%;">
                                             <span t-esc="docs[0].date.strftime('%b-%d')"/>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td style="background-color: #c6d9f0; width: 12%;">
+                                        <td style="border:solid black 1px;background-color: #c6d9f0; width: 12%;">
                                             <strong>Staff Position:</strong>
                                         </td>
-                                        <td colspan="5" style="width: 32%;">
+                                        <td colspan="5" style="border:solid black 1px;width: 32%;">
                                             <span t-field="employee.job_id"/>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td style="background-color: #c6d9f0; width: 12%;">
+                                        <td style="border:solid black 1px;background-color: #c6d9f0; width: 12%;">
                                             <strong>Supervisor Name:</strong>
                                         </td>
-                                        <td colspan="3" style="width: 32%">
+                                        <td colspan="3" style="border:solid black 1px;width: 32%">
                                             <span t-field="employee.parent_id"/>
                                         </td>
-                                        <td style="background-color: #c6d9f0; width: 8%;">
+                                        <td style="border:solid black 1px;background-color: #c6d9f0; width: 8%;">
                                             <strong>Field Office:</strong>
                                         </td>
-                                        <td style="width: 12%;">
+                                        <td style="border:solid black 1px;width: 12%;">
                                             <span t-field="employee.work_location_id"/>
                                         </td>
-                                        <td style="background-color: #c6d9f0; width: 6%;">
+                                        <td style="border:solid black 1px;background-color: #c6d9f0; width: 6%;">
                                             <strong>Year</strong>
                                         </td>
-                                        <td style="width: 6%;">
+                                        <td style="border:solid black 1px;width: 6%;">
                                             <span t-esc="docs[0].date.strftime('%Y')"/>
                                         </td>
                                     </tr>
@@ -81,31 +82,33 @@
                             </div>
 
                         </div>
-                        <table class="table table-bordered" style="border-color: black;margin-top: -17px;">
+                        <table class="table" style="border-color: black;margin-top: -17px;">
                             <tr>
                                 <td rowspan="2" class="text-center" colspan="2"
-                                    style="vertical-align: middle;width:200px">
+                                    style="border:solid black 1px;vertical-align: middle;width:200px">
                                     <span style="font-size:14px">Type</span>
                                 </td>
 
 
-                                <td t-foreach="dates" style="vertical-align: middle;text-align-center" t-as="date">
+                                <td t-foreach="dates"
+                                    style="border:solid black 1px;vertical-align: middle;text-align-center" t-as="date">
                                     <span t-esc="date.strftime('%a')"/>
                                 </td>
 
                                 <td rowspan="2" class="text-center"
-                                    style="vertical-align: middle;background-color:#ccc;font-size:13px;width:60px">
+                                    style="border:solid black 1px;vertical-align: middle;background-color:#ccc;font-size:13px;width:60px">
                                     <span>%</span>
                                 </td>
 
                                 <td rowspan="2" class="text-center"
-                                    style="vertical-align: middle;background-color:#ccc;font-size:13px;width:60px">
+                                    style="border:solid black 1px;vertical-align: middle;background-color:#ccc;font-size:13px;width:60px">
                                     <span># Total Hrs</span>
                                 </td>
                             </tr>
 
                             <tr>
-                                <td t-foreach="dates" style="vertical-align: middle;text-align-center" t-as="date">
+                                <td t-foreach="dates"
+                                    style="border:solid black 1px;vertical-align: middle;text-align-center" t-as="date">
                                     <span t-esc="date.strftime('%d')"/>
                                 </td>
                             </tr>
@@ -114,13 +117,13 @@
                                t-value="sorted(list(set([t['project'] for t in timesheets if not t['is_leave'] and t['employee'] == employee])))"/>
                             <t t-foreach="projects" t-as="project">
                                 <tr>
-                                    <td colspan="2">
+                                    <td colspan="2" style="border:solid black 1px;">
                                         <span style="font-size:14px" t-esc="project"/>
                                     </td>
                                     <t t-set="total_time" t-value="0"/>
                                     <t t-set="percentage_allocate" t-value="0"/>
                                     <t t-foreach="dates" t-as="date">
-                                        <td style="vertical-align: middle;text-align-center">
+                                        <td style="border:solid black 1px;vertical-align: middle;text-align-center">
                                             <t t-set="daily_time" t-value="0"/>
                                             <t t-foreach="timesheets" t-as="t">
                                                 <t t-if="not t['is_leave'] and t['employee'] == employee and t['date'] == date and t['project'] == project">
@@ -132,10 +135,10 @@
                                             <t t-set="total_time" t-value="total_time + daily_time"/>
                                         </td>
                                     </t>
-                                    <td style="background-color:#ccc;vertical-align: middle;text-align-center">
+                                    <td style="border:solid black 1px;background-color:#ccc;vertical-align: middle;text-align-center">
                                         <span t-esc="round(percentage_allocate,2)"/>
                                     </td>
-                                    <td style="background-color:#ccc;vertical-align: middle;text-align-center">
+                                    <td style="border:solid black 1px;background-color:#ccc;vertical-align: middle;text-align-center">
                                         <span t-esc="round(total_time,2)"/>
                                     </td>
                                 </tr>
@@ -143,11 +146,11 @@
 
                             <!-- Total working hours row -->
                             <tr>
-                                <td colspan="2">
+                                <td colspan="2" style="border:solid black 1px;">
                                     <strong style="font-size:14px">Total Working Hours</strong>
                                 </td>
                                 <t t-foreach="dates" t-as="date">
-                                    <td style="vertical-align: middle;text-align-center;background-color:#e7e7e7;">
+                                    <td style="border:solid black 1px;vertical-align: middle;text-align-center;background-color:#e7e7e7;">
                                         <t t-set="daily_total" t-value="0"/>
                                         <t t-foreach="timesheets" t-as="t">
                                             <t t-if="t['employee'] == employee and t['date'] == date and not t['is_leave']">
@@ -159,8 +162,8 @@
                                         </strong>
                                     </td>
                                 </t>
-                                <td/>
-                                <td style="background-color:#ccc;vertical-align: middle;text-align-center">
+                                <td style="border:solid black 1px;background-color:#ccc;vertical-align: middle;text-align-center"/>
+                                <td style="border:solid black 1px;background-color:#ccc;vertical-align: middle;text-align-center">
                                     <t t-set="grand_total" t-value="0"/>
                                     <t t-foreach="timesheets" t-as="t">
                                         <t t-if="not t['is_leave'] and t['employee'] == employee">
@@ -178,13 +181,13 @@
 
                             <t t-foreach="projects" t-as="project">
                                 <tr>
-                                    <td colspan="2">
+                                    <td colspan="2" style="border:solid black 1px;">
                                         <span style="font-size:14px" t-esc="project"/>
                                     </td>
                                     <t t-set="total_time" t-value="0"/>
                                     <t t-set="percentage_allocate" t-value="0"/>
                                     <t t-foreach="dates" t-as="date">
-                                        <td style="vertical-align: middle;text-align-center">
+                                        <td style="border:solid black 1px;vertical-align: middle;text-align-center">
                                             <t t-set="daily_time" t-value="0"/>
                                             <t t-foreach="timesheets" t-as="t">
                                                 <t t-if="t['is_leave'] and t['employee'] == employee and t['date'] == date and t['project'] == project">
@@ -197,11 +200,11 @@
                                         </td>
                                     </t>
 
-                                    <td style="background-color:#ccc;vertical-align: middle;text-align-center">
+                                    <td style="border:solid black 1px;border:solid black 1px;background-color:#ccc;vertical-align: middle;text-align-center">
                                         <span t-esc="round(percentage_allocate,2)"/>
                                     </td>
 
-                                    <td style="background-color:#ccc;vertical-align: middle;text-align-center">
+                                    <td style="border:solid black 1px;background-color:#ccc;vertical-align: middle;text-align-center">
                                         <span t-esc="round(total_time,2)"/>
                                     </td>
                                 </tr>
@@ -209,11 +212,11 @@
 
                             <!-- Total timeoff hours row -->
                             <tr>
-                                <td colspan="2">
+                                <td colspan="2" style="border:solid black 1px;">
                                     <strong style="font-size:14px">Total Timeoff Hours</strong>
                                 </td>
                                 <t t-foreach="dates" t-as="date">
-                                    <td style="vertical-align: middle;text-align-center;background-color:#e7e7e7;">
+                                    <td style="border:solid black 1px;vertical-align: middle;text-align-center;background-color:#e7e7e7;">
                                         <t t-set="daily_total" t-value="0"/>
                                         <t t-foreach="timesheets" t-as="t">
                                             <t t-if="t['employee'] == employee and t['date'] == date and t['is_leave']">
@@ -226,8 +229,8 @@
                                     </td>
                                 </t>
 
-                                <td/>
-                                <td style="background-color:#ccc;vertical-align: middle;text-align-center">
+                               <td style="border:solid black 1px;background-color:#ccc;vertical-align: middle;text-align-center"/>
+                                <td style="border:solid black 1px;background-color:#ccc;vertical-align: middle;text-align-center">
                                     <t t-set="grand_total" t-value="0"/>
                                     <t t-foreach="timesheets" t-as="t">
                                         <t t-if="t['is_leave'] and t['employee'] == employee">
@@ -242,11 +245,11 @@
 
                             <!-- Total hours row -->
                             <tr>
-                                <td colspan="2">
+                                <td colspan="2" style="border:solid black 1px;">
                                     <strong style="font-size:14px">Total Hours</strong>
                                 </td>
                                 <t t-foreach="dates" t-as="date">
-                                    <td style="vertical-align: middle;text-align-center;background-color:#e7e7e7;">
+                                    <td style="border:solid black 1px;vertical-align: middle;text-align-center;background-color:#e7e7e7;">
                                         <t t-set="daily_total" t-value="0"/>
                                         <t t-foreach="timesheets" t-as="t">
                                             <t t-if="t['employee'] == employee and t['date'] == date">
@@ -258,8 +261,8 @@
                                         </strong>
                                     </td>
                                 </t>
-                                <td/>
-                                <td style="background-color:#ccc;vertical-align: middle;text-align-center">
+                                <td style="border:solid black 1px;background-color:#ccc;vertical-align: middle;text-align-center"/>
+                                <td style="border:solid black 1px;background-color:#ccc;vertical-align: middle;text-align-center">
                                     <t t-set="grand_total" t-value="0"/>
                                     <t t-foreach="timesheets" t-as="t">
                                         <t t-if="t['employee'] == employee">
