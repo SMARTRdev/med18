@@ -28,7 +28,7 @@ class TimesheetSelect(models.TransientModel):
 
                 self.employee_ids = employee
 
-                sign_template = self.sign_template_id.copy()
+                sign_template = self.sign_template_id.copy({"use_as_sign_print_timesheet_report": False})
 
                 data_dict = {'id': self.id, 'start_date': self.start_date, 'end_date': self.end_date,
                              'employee_ids': self.employee_ids}
