@@ -4,8 +4,8 @@ from odoo import models, api, _
 from odoo.exceptions import ValidationError
 
 
-class HrPayslip(models.Model):
-    _inherit = "hr.payslip"
+class HrLeave(models.Model):
+    _inherit = "hr.leave"
 
     def check_allocate_timesheet(self):
         if self.env["allocate.timesheet.line"].sudo().search_count(
@@ -24,8 +24,9 @@ class HrPayslip(models.Model):
         return res
 
     def write(self, vals):
-        for leave in self:
-            leave.check_allocate_timesheet()
+        if "payslip_state" not in vals:
+            for leave in self:
+                leave.check_allocate_timesheet()
 
         return super().write(vals)
 
