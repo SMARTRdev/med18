@@ -50,7 +50,6 @@ class ReportPayslipBatch(models.AbstractModel):
         payslips = []
         total_report_columns = {}
         currency = batch.currency_id
-        currency_rate = batch.currency_rate
 
         for report_column in report_columns:
             total_report_columns.update({report_column["id"]: 0})
@@ -78,12 +77,9 @@ class ReportPayslipBatch(models.AbstractModel):
 
             for report_column in report_columns:
                 total = 0
-                if report_column["companies"] in payslip.employee_id.company_id or not report_column["companies"]:
+                if payslip.employee_id.company_id in report_column["companies"] or not report_column["companies"]:
                     total = sum(line.total for line in
                                 payslip.line_ids.filtered(lambda l: l.salary_rule_id in report_column["rules"]))
-
-                # if report_column["currency"] and report_column["currency"] != currency:
-                #     total = total * currency_rate
 
                 payslip_data.update({report_column["id"]: total})
                 total_report_columns[report_column["id"]] += total

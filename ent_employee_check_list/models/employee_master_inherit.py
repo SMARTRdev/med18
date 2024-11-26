@@ -26,10 +26,50 @@ from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 
 
+class HREmployeeBase(models.AbstractModel):
+    _inherit = 'hr.employee.base'
+
+    entry_checklist = fields.Many2many('employee.checklist', 'entry_obj', 'check_hr_rel', 'hr_check_rel',
+                                       string='Entry Process',
+                                       domain="[('document_type', '=', 'entry'),('job_id', '=', job_id)]",
+                                       readonly=True,
+                                       help="Entry Checklist's")
+    exit_checklist = fields.Many2many('employee.checklist', 'exit_obj', 'exit_hr_rel', 'hr_exit_rel',
+                                      string='Exit Process',
+                                      readonly=True,
+                                      domain="[('document_type', '=', 'exit'),('job_id', '=', job_id)]")
+
+    @api.depends('exit_checklist')
+    def compute_exit_progress(self):
+        for each in self:
+            total_len = self.env['employee.checklist'].search_count([('document_type', '=', 'exit'),
+                                                                     ('job_id', '=', each.job_id.id)])
+            entry_len = len(each.exit_checklist)
+            if total_len != 0:
+                each.exit_progress = round((entry_len * 100) / total_len)
+
+    @api.depends('entry_checklist')
+    def compute_entry_progress(self):
+        for each in self:
+            total_len = self.env['employee.checklist'].search_count([('document_type', '=', 'entry'),
+                                                                     ('job_id', '=', each.job_id.id)])
+            entry_len = len(each.entry_checklist)
+            if total_len != 0:
+                each.entry_progress = round((entry_len * 100) / total_len)
+
+    entry_progress = fields.Float(compute=compute_entry_progress, string='Entry Progress', store=True, default=0.0,
+                                  help="Percentage of Entry Checklists's")
+    exit_progress = fields.Float(compute=compute_exit_progress, string='Exit Progress', store=True, default=0.0,
+                                 help="Percentage of Exit Checklists's")
+    maximum_rate = fields.Integer(default=100)
+    check_list_enable = fields.Boolean(invisible=True, copy=False)
+
+
 class EmployeeMasterInherit(models.Model):
     _inherit = 'hr.employee'
 
     job_id = fields.Many2one(required=True)
+    show_checklist = fields.Boolean(compute="compute_show_checklist")
 
     def create(self, vals_list):
         for val in vals_list:
@@ -54,41 +94,6 @@ class EmployeeMasterInherit(models.Model):
                 })
                 plan.action_schedule_plan()
         return res
-
-    @api.depends('exit_checklist')
-    def compute_exit_progress(self):
-        for each in self:
-            total_len = self.env['employee.checklist'].search_count([('document_type', '=', 'exit'),
-                                                                     ('job_id', '=', each.job_id.id)])
-            entry_len = len(each.exit_checklist)
-            if total_len != 0:
-                each.exit_progress = round((entry_len * 100) / total_len)
-
-    @api.depends('entry_checklist')
-    def compute_entry_progress(self):
-        for each in self:
-            total_len = self.env['employee.checklist'].search_count([('document_type', '=', 'entry'),
-                                                                     ('job_id', '=', each.job_id.id)])
-            entry_len = len(each.entry_checklist)
-            if total_len != 0:
-                each.entry_progress = round((entry_len * 100) / total_len)
-
-    entry_checklist = fields.Many2many('employee.checklist', 'entry_obj', 'check_hr_rel', 'hr_check_rel',
-                                       string='Entry Process',
-                                       domain="[('document_type', '=', 'entry'),('job_id', '=', job_id)]",
-                                       readonly=True,
-                                       help="Entry Checklist's")
-    exit_checklist = fields.Many2many('employee.checklist', 'exit_obj', 'exit_hr_rel', 'hr_exit_rel',
-                                      string='Exit Process',
-                                      readonly=True,
-                                      domain="[('document_type', '=', 'exit'),('job_id', '=', job_id)]")
-    entry_progress = fields.Float(compute=compute_entry_progress, string='Entry Progress', store=True, default=0.0,
-                                  help="Percentage of Entry Checklists's")
-    exit_progress = fields.Float(compute=compute_exit_progress, string='Exit Progress', store=True, default=0.0,
-                                 help="Percentage of Exit Checklists's")
-    maximum_rate = fields.Integer(default=100)
-    check_list_enable = fields.Boolean(invisible=True, copy=False)
-    show_checklist = fields.Boolean(compute="compute_show_checklist")
 
     def compute_show_checklist(self):
         for rec in self:

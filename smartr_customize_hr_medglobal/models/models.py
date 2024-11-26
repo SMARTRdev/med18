@@ -8,25 +8,6 @@ from odoo.exceptions import ValidationError, UserError
 from odoo.tools import format_amount
 
 
-class HrEmployee(models.Model):
-    _inherit = 'hr.employee'
-
-    department_function_id = fields.Many2one(related="department_id.department_function_id",
-                                             string="Department Function", readonly=True, store=True)
-
-    def create(self, vals_list):
-        if 'job_id' in vals_list:
-            job_position = self.env['hr.job'].browse(vals_list['job_id'])
-            if job_position.no_of_recruitment <= 0:
-                if not self.env.user._is_superuser():
-                    raise UserError(_("You can't create employee in job position {} because target is zero."
-                                      .format(job_position.name)))
-            else:
-                job_position.no_of_recruitment -= 1
-
-        return super().create(vals_list)
-
-
 class HrAnnouncementType(models.Model):
     _name = 'hr.announcement.category'
 
