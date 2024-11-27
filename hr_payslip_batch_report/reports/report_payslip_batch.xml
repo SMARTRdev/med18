@@ -31,7 +31,7 @@
                             </div>
 
                             <table class="table table-bordered">
-                                <t t-set="total_cols" t-value="6"/>
+                                <t t-set="total_cols" t-value="5"/>
                                 <thead>
                                     <tr>
                                         <th>#</th>
@@ -111,7 +111,10 @@
 
                                     <!-- total  -->
                                     <tr>
-                                        <td t-att-colspan="total_cols" class="text-center">
+                                        <td t-att-colspan="total_cols">
+
+                                        </td>
+                                        <td>
                                             <strong>Total</strong>
                                         </td>
 
@@ -186,7 +189,7 @@
         <field name="report_type">qweb-pdf</field>
         <field name="report_name">hr_payslip_batch_report.report_payslip_batch</field>
         <field name="report_file">hr_payslip_batch_report.report_payslip_batch</field>
-        <field name="print_report_name">'Paysheet - %s' % object.display_name</field>
+        <field name="print_report_name">'Paysheet - %s - %s' % (object.display_name,object.company_id.display_name)</field>
         <field name="binding_model_id" ref="hr_payroll.model_hr_payslip_run"/>
         <field name="binding_type">report</field>
         <field name="paperformat_id" ref="hr_payslip_batch_report.report_paperformat_payslip_batch"/>

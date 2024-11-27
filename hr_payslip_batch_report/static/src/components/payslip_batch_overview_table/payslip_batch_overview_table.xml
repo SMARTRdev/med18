@@ -23,6 +23,7 @@
                 <div style="overflow-y: auto;height: 800px;">
 
                 <table class="table">
+                    <t t-set="total_cols" t-value="4"/>
                     <thead>
                         <tr>
                             <th style="position: sticky;top: 0;background-color: #fff;z-index: 100;">#</th>
@@ -31,7 +32,9 @@
                             <th style="position: sticky;top: 0;background-color: #fff;z-index: 100;">Contract start date</th>
                             <th style="position: sticky;top: 0;background-color: #fff;z-index: 100;">Contract end date</th>
                             <th t-if="showReportColumn('work_days_payslip')"
-                                style="position: sticky;top: 0;background-color: #fff;z-index: 100;">Work Days</th>
+                                style="position: sticky;top: 0;background-color: #fff;z-index: 100;">
+                                <t t-set="total_cols" t-value="5"/>
+                                Work Days</th>
                             <t t-foreach="props.reportColumns" t-as="reportColumn" t-key="reportColumn.id">
                                 <th t-if="showReportColumn(reportColumn.id)"
                                     style="position: sticky;top: 0;background-color: #fff;z-index: 100;"
@@ -53,7 +56,8 @@
 
                         <!-- total  -->
                         <tr>
-                            <td colspan="6" class="text-center">
+                            <td t-att-colspan="total_cols"/>
+                            <td>
                                 <strong>Total</strong>
                             </td>
                             <t t-foreach="props.reportColumns" t-as="reportColumn" t-key="reportColumn.id">
