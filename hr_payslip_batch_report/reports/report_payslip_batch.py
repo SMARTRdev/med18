@@ -56,7 +56,7 @@ class ReportPayslipBatch(models.AbstractModel):
 
         index = 0
 
-        for payslip in batch.slip_ids:
+        for payslip in batch.slip_ids.sorted(key=lambda s: s.employee_id.name):
             index += 1
             contract = payslip.contract_id
             payslip_data = {
