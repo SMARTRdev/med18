@@ -16,15 +16,15 @@ class HrPayslipRunActionReasonWizard(models.TransientModel):
     def action_apply(self):
         payslip_batch = self.env["hr.payslip.run"].browse(self._context.get("active_id"))
 
-        self.env["hr.payslip.run.action.reason.line"].create({
+        self.env["hr.payslip.run.action.reason.line"].sudo().create({
             "payslip_run_id": payslip_batch.id,
             "type": self.action_type,
             "reason": self.action_reason
         })
 
         if self.action_type == "approved":
-            payslip_batch.action_approve()
+            payslip_batch.sudo().action_approve()
         else:
-            payslip_batch.write({"state": "draft"})
+            payslip_batch.sudo().write({"state": "draft"})
 
         return True

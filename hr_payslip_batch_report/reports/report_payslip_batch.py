@@ -15,9 +15,10 @@ class ReportPayslipBatch(models.AbstractModel):
         payslips = batch.slip_ids
 
         report_columns = []
+        data_context = data.get("context", {})
         option_columns = {
-            "work_days_payslip": data.get("work_days_payslip", 'false') == 'true' and True or False,
-            "payment_by_hq": data.get("payment_by_hq", 'false') == 'true' and True or False
+            "work_days_payslip": data_context.get("work_days_payslip", False),
+            "payment_by_hq": data_context.get("payment_by_hq", False)
         }
         display_option_columns = {
             "work_days_payslip": _("Work Days"),
@@ -40,7 +41,7 @@ class ReportPayslipBatch(models.AbstractModel):
             })
 
             if payslip_batch_report_column.optional_display:
-                option_columns.update({column_id: data.get(column_id, 'false') == 'true' and True or False})
+                option_columns.update({column_id: data_context.get(column_id, False)})
 
                 display_option_columns.update({column_id: payslip_batch_report_column.name})
 

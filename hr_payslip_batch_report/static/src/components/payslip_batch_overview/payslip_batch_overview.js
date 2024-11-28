@@ -78,18 +78,22 @@ export class PayslipBatchOverviewComponent extends Component {
             report_type: "qweb-pdf",
             report_name: this.getReportName(),
             report_file: "hr_payslip_batch_report.report_payslip_batch",
+            context: this.getReportContext()
         });
     }
 
     getReportName() {
-        let reportName = "hr_payslip_batch_report.report_payslip_batch?docids=" + this.activeId
+        return "hr_payslip_batch_report.report_payslip_batch/"+ this.activeId;
+    }
 
+    getReportContext() {
+        let context = {}
 
         for(const showOption in this.state.showOptions){
-           reportName += `&${showOption}=${this.state.showOptions[showOption]}`
+           context[showOption] = this.state.showOptions[showOption];
         }
 
-        return reportName;
+        return context
     }
 }
 

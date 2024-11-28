@@ -38,7 +38,7 @@ class HrPayslipRun(models.Model):
         payslip_batches.write({"state": "under_approval"})
 
     def action_approve(self):
-        for payslip_batch in self:
+        for payslip_batch in self.sudo():
             if payslip_batch.use_approval_route != "no" and payslip_batch.approval_route_id and payslip_batch.is_under_approval:
                 payslip_batch._action_approve()
                 if self._is_fully_approved():
